@@ -5,6 +5,9 @@ mod systems {
 mod models {
     mod moves;
     mod position;
+    mod path;
+    mod case;
+    mod grid;
 }
 
 mod tests {

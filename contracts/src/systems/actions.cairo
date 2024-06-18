@@ -4,6 +4,7 @@ use dojo_starter::models::position::Position;
 // define the interface
 #[dojo::interface]
 trait IActions {
+    fn set_up_grid(ref world: IWorldDispatcher);
     fn spawn(ref world: IWorldDispatcher);
     fn move(ref world: IWorldDispatcher, direction: Direction);
 }
@@ -14,8 +15,10 @@ mod actions {
     use super::{IActions, next_position};
     use starknet::{ContractAddress, get_caller_address};
     use dojo_starter::models::{
-        position::{Position, Vec2}, moves::{Moves, Direction, DirectionsAvailable}
+        position::{Position, Vec2}, moves::{Moves, Direction, DirectionsAvailable}, grid::{Grid, GridTrait}
     };
+
+    const SIMULATION_ID: u32 = 999;
 
     #[derive(Copy, Drop, Serde)]
     #[dojo::model]
@@ -28,6 +31,10 @@ mod actions {
 
     #[abi(embed_v0)]
     impl ActionsImpl of IActions<ContractState> {
+        fn set_up_grid(ref world: IWorldDispatcher) {
+            GridTrait::new();
+        }
+
         fn spawn(ref world: IWorldDispatcher) {
             // Get the address of the current caller, possibly the player's address.
             let player = get_caller_address();
@@ -50,7 +57,7 @@ mod actions {
                 world,
                 (
                     Moves {
-                        player, remaining: 100, last_direction: Direction::None(()), can_move: true
+                        player, last_direction: Direction::None(()), can_move: true
                     },
                     Position {
                         player, vec: Vec2 { x: position.vec.x + 10, y: position.vec.y + 10 }
@@ -69,7 +76,7 @@ mod actions {
             let (mut position, mut moves) = get!(world, player, (Position, Moves));
 
             // Deduct one from the player's remaining moves.
-            moves.remaining -= 1;
+            // moves.remaining -= 1;
 
             // Update the last direction the player moved in.
             moves.last_direction = direction;

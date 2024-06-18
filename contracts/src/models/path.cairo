@@ -1,11 +1,11 @@
 use starknet::ContractAddress;
 use super::case::Vec2;
 
-#[derive(Copy, Drop, Serde)]
+#[derive(Drop, Serde)]
 #[dojo::model]
-struct Position {
+struct Path {
     #[key]
     player: ContractAddress,
-    vec: Vec2,
+    cases: Option<Array<Vec2>>,
+    end_time: Option<u32>
 }
-

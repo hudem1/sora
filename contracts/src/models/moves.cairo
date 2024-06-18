@@ -5,7 +5,6 @@ use starknet::ContractAddress;
 struct Moves {
     #[key]
     player: ContractAddress,
-    remaining: u8,
     last_direction: Direction,
     can_move: bool,
 }
