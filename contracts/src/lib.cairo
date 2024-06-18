@@ -4,6 +4,7 @@ mod systems {
 
 mod models {
     mod moves;
+    mod path;
     mod position;
     mod tile;
 }

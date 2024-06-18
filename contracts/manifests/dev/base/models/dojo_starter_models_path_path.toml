@@ -1,0 +1,20 @@
+kind = "DojoModel"
+class_hash = "0x5ac0385f5d2cc286d4e86b0da96c1d57a31d89ab6fdb6d7c155c98730045a60"
+original_class_hash = "0x5ac0385f5d2cc286d4e86b0da96c1d57a31d89ab6fdb6d7c155c98730045a60"
+abi = "manifests/dev/abis/base/models/dojo_starter_models_path_path.json"
+name = "dojo_starter::models::path::path"
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[members]]
+name = "tiles"
+type = "Option<Span<Vec2>>"
+key = false
+
+[[members]]
+name = "end_time"
+type = "Option<u32>"
+key = false
