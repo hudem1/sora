@@ -22,8 +22,8 @@ name = "dojo::base::base"
 [[contracts]]
 kind = "DojoContract"
 address = "0x3610b797baec740e2fa25ae90b4a57d92b04f48a1fdbae1ae203eaf9723c1a0"
-class_hash = "0x6b9e8abff1a178c80f9c18a29a35436d48759a1bcada1f074b1821df0f87119"
-original_class_hash = "0x6b9e8abff1a178c80f9c18a29a35436d48759a1bcada1f074b1821df0f87119"
+class_hash = "0x128050baea4c238bebbc42b7c36237648673a7b924de532b7069aef6dab211f"
+original_class_hash = "0x128050baea4c238bebbc42b7c36237648673a7b924de532b7069aef6dab211f"
 base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
 abi = "manifests/dev/abis/deployments/contracts/dojo_starter_systems_actions_actions.json"
 reads = []
@@ -55,8 +55,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x2f6c0529a3aa4c81c1679408106b2c00013fc19a7088ed9639046c0e3aeac7a"
-original_class_hash = "0x2f6c0529a3aa4c81c1679408106b2c00013fc19a7088ed9639046c0e3aeac7a"
+class_hash = "0xe7bc1a9ccd3ada6130fcdae0ca9959c100574e1dc6304567732d147c3c323d"
+original_class_hash = "0xe7bc1a9ccd3ada6130fcdae0ca9959c100574e1dc6304567732d147c3c323d"
 abi = "manifests/dev/abis/deployments/models/dojo_starter_models_moves_moves.json"
 name = "dojo_starter::models::moves::moves"
 
@@ -64,11 +64,6 @@ name = "dojo_starter::models::moves::moves"
 name = "player"
 type = "ContractAddress"
 key = true
-
-[[models.members]]
-name = "remaining"
-type = "u8"
-key = false
 
 [[models.members]]
 name = "last_direction"
@@ -82,8 +77,30 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x4312e0e9fa6d912c293311798591e5022744a5fbebefc5ddfcfcc9b7c0c9be1"
-original_class_hash = "0x4312e0e9fa6d912c293311798591e5022744a5fbebefc5ddfcfcc9b7c0c9be1"
+class_hash = "0x5ac0385f5d2cc286d4e86b0da96c1d57a31d89ab6fdb6d7c155c98730045a60"
+original_class_hash = "0x5ac0385f5d2cc286d4e86b0da96c1d57a31d89ab6fdb6d7c155c98730045a60"
+abi = "manifests/dev/abis/deployments/models/dojo_starter_models_path_path.json"
+name = "dojo_starter::models::path::path"
+
+[[models.members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[models.members]]
+name = "tiles"
+type = "Option<Span<Vec2>>"
+key = false
+
+[[models.members]]
+name = "end_time"
+type = "Option<u32>"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x16f9f644d58ce1c8eb32b2e41b09ba9d7fdf86793a6f76e28fc67819730a052"
+original_class_hash = "0x16f9f644d58ce1c8eb32b2e41b09ba9d7fdf86793a6f76e28fc67819730a052"
 abi = "manifests/dev/abis/deployments/models/dojo_starter_models_position_position.json"
 name = "dojo_starter::models::position::position"
 
@@ -95,6 +112,50 @@ key = true
 [[models.members]]
 name = "vec"
 type = "Vec2"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x3f08e80f7dbdd85355bc45b663b06aab29ee7c555343f0f50032a9460b109e2"
+original_class_hash = "0x3f08e80f7dbdd85355bc45b663b06aab29ee7c555343f0f50032a9460b109e2"
+abi = "manifests/dev/abis/deployments/models/dojo_starter_models_tile_tile.json"
+name = "dojo_starter::models::tile::tile"
+
+[[models.members]]
+name = "_coords"
+type = "Vec2"
+key = true
+
+[[models.members]]
+name = "coords"
+type = "Vec2"
+key = false
+
+[[models.members]]
+name = "nature"
+type = "CaseNature"
+key = false
+
+[[models.members]]
+name = "allocated"
+type = "Option<ContractAddress>"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x22e95f68b0c997692ea80b6c55efb33b8351f67b23cda5dedbdfa2260d7e852"
+original_class_hash = "0x22e95f68b0c997692ea80b6c55efb33b8351f67b23cda5dedbdfa2260d7e852"
+abi = "manifests/dev/abis/deployments/models/dojo_starter_models_world_settings_world_settings.json"
+name = "dojo_starter::models::world_settings::world_settings"
+
+[[models.members]]
+name = "settings_id"
+type = "u32"
+key = true
+
+[[models.members]]
+name = "grid_size"
+type = "u32"
 key = false
 
 [[models]]

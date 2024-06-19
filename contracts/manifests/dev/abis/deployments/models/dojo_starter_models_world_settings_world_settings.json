@@ -319,70 +319,26 @@
   },
   {
     "type": "impl",
-    "name": "movesImpl",
-    "interface_name": "dojo_starter::models::moves::Imoves"
-  },
-  {
-    "type": "enum",
-    "name": "dojo_starter::models::moves::Direction",
-    "variants": [
-      {
-        "name": "None",
-        "type": "()"
-      },
-      {
-        "name": "Left",
-        "type": "()"
-      },
-      {
-        "name": "Right",
-        "type": "()"
-      },
-      {
-        "name": "Up",
-        "type": "()"
-      },
-      {
-        "name": "Down",
-        "type": "()"
-      }
-    ]
-  },
-  {
-    "type": "enum",
-    "name": "core::bool",
-    "variants": [
-      {
-        "name": "False",
-        "type": "()"
-      },
-      {
-        "name": "True",
-        "type": "()"
-      }
-    ]
+    "name": "world_settingsImpl",
+    "interface_name": "dojo_starter::models::world_settings::Iworld_settings"
   },
   {
     "type": "struct",
-    "name": "dojo_starter::models::moves::Moves",
+    "name": "dojo_starter::models::world_settings::WorldSettings",
     "members": [
       {
-        "name": "player",
-        "type": "core::starknet::contract_address::ContractAddress"
+        "name": "settings_id",
+        "type": "core::integer::u32"
       },
       {
-        "name": "last_direction",
-        "type": "dojo_starter::models::moves::Direction"
-      },
-      {
-        "name": "can_move",
-        "type": "core::bool"
+        "name": "grid_size",
+        "type": "core::integer::u32"
       }
     ]
   },
   {
     "type": "interface",
-    "name": "dojo_starter::models::moves::Imoves",
+    "name": "dojo_starter::models::world_settings::Iworld_settings",
     "items": [
       {
         "type": "function",
@@ -390,7 +346,7 @@
         "inputs": [
           {
             "name": "model",
-            "type": "dojo_starter::models::moves::Moves"
+            "type": "dojo_starter::models::world_settings::WorldSettings"
           }
         ],
         "outputs": [],
@@ -400,7 +356,7 @@
   },
   {
     "type": "event",
-    "name": "dojo_starter::models::moves::moves::Event",
+    "name": "dojo_starter::models::world_settings::world_settings::Event",
     "kind": "enum",
     "variants": []
   }

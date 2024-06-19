@@ -324,7 +324,7 @@
   },
   {
     "type": "struct",
-    "name": "dojo_starter::models::position::Vec2",
+    "name": "dojo_starter::models::tile::Vec2",
     "members": [
       {
         "name": "x",
@@ -346,7 +346,7 @@
       },
       {
         "name": "vec",
-        "type": "dojo_starter::models::position::Vec2"
+        "type": "dojo_starter::models::tile::Vec2"
       }
     ]
   },

@@ -371,10 +371,6 @@
         "type": "core::starknet::contract_address::ContractAddress"
       },
       {
-        "name": "remaining",
-        "type": "core::integer::u8"
-      },
-      {
         "name": "last_direction",
         "type": "dojo_starter::models::moves::Direction"
       },

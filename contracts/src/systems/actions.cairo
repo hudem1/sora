@@ -4,6 +4,7 @@ use dojo_starter::models::position::Position;
 // define the interface
 #[dojo::interface]
 trait IActions {
+    fn init_grid(ref world: IWorldDispatcher, grid_size: u32);
     fn spawn(ref world: IWorldDispatcher);
     fn move(ref world: IWorldDispatcher, direction: Direction);
 }
@@ -11,10 +12,10 @@ trait IActions {
 // dojo decorator
 #[dojo::contract]
 mod actions {
-    use super::{IActions, next_position};
+    use super::{IActions, is_move_inside_grid_bounds, next_position};
     use starknet::{ContractAddress, get_caller_address};
     use dojo_starter::models::{
-        position::{Position, Vec2}, moves::{Moves, Direction, DirectionsAvailable}
+        position::{Position}, moves::{Moves, Direction, DirectionsAvailable}, world_settings::{WorldSettings, SETTINGS_ID}, tile::{Tile, Vec2, CaseNature}
     };
 
     #[derive(Copy, Drop, Serde)]
@@ -28,16 +29,43 @@ mod actions {
 
     #[abi(embed_v0)]
     impl ActionsImpl of IActions<ContractState> {
+        fn init_grid(ref world: IWorldDispatcher, grid_size: u32) {
+            assert(grid_size > 0, 'grid size must be > 0');
+
+            set!(world, (WorldSettings { settings_id: SETTINGS_ID, grid_size }));
+
+            let mut row_i = 0;
+            while row_i < grid_size {
+                let mut col = 0;
+                while col < grid_size {
+                    set!(
+                        world,
+                        (
+                            Tile {
+                                // not stored, only used for computing storage address
+                                _coords: Vec2 { x: row_i, y: col },
+                                coords: Vec2 { x: row_i, y: col },
+                                nature: CaseNature::Road,
+                                allocated: Option::None,
+                            }
+                        )
+                    );
+                    col += 1;
+                };
+
+                row_i += 1;
+            };
+        }
+
         fn spawn(ref world: IWorldDispatcher) {
+            let world_settings: WorldSettings = get!(world, SETTINGS_ID, (WorldSettings));
+            assert(world_settings.grid_size > 0, 'must first initialize grid');
+
             // Get the address of the current caller, possibly the player's address.
             let player = get_caller_address();
-            // Retrieve the player's current position from the world.
-            let position = get!(world, player, (Position));
 
-            // Update the world state with the new data.
-            // 1. Set the player's remaining moves to 100.
-            // 2. Move the player's position 10 units in both the x and y direction.
-            // 3. Set available directions to all four directions. (This is an example of how you can use an array in Dojo).
+            // Set the player's position at the center of the grid
+            // Set available directions to all four directions.
 
             let directions_available = DirectionsAvailable {
                 player,
@@ -50,31 +78,34 @@ mod actions {
                 world,
                 (
                     Moves {
-                        player, remaining: 100, last_direction: Direction::None(()), can_move: true
+                        player, last_direction: Direction::None(()), can_move: true
                     },
                     Position {
-                        player, vec: Vec2 { x: position.vec.x + 10, y: position.vec.y + 10 }
+                        player, vec: Vec2 { x: world_settings.grid_size / 2, y: world_settings.grid_size / 2 }
                     },
                     directions_available
                 )
             );
         }
 
-        // Implementation of the move function for the ContractState struct.
         fn move(ref world: IWorldDispatcher, direction: Direction) {
+            let world_settings: WorldSettings = get!(world, SETTINGS_ID, (WorldSettings));
+            assert(world_settings.grid_size > 0, 'must first initialize grid');
+
             // Get the address of the current caller, possibly the player's address.
             let player = get_caller_address();
 
             // Retrieve the player's current position and moves data from the world.
             let (mut position, mut moves) = get!(world, player, (Position, Moves));
 
-            // Deduct one from the player's remaining moves.
-            moves.remaining -= 1;
-
             // Update the last direction the player moved in.
             moves.last_direction = direction;
 
             // Calculate the player's next position based on the provided direction.
+            assert(
+                is_move_inside_grid_bounds(position, direction, world_settings.grid_size),
+                'illegal move: out of bounds'
+            );
             let next = next_position(position, direction);
 
             // Update the world state with the new moves data and position.
@@ -83,9 +114,32 @@ mod actions {
             emit!(world, (Moved { player, direction }));
         }
     }
+
+    // #[generate_trait]
+    // impl ActionsInternImpl of ActionsIntern {
+    //     fn is_move_inside_grid_bounds(position: Position, direction: Direction, grid_size: u32) -> bool {
+    //         match direction {
+    //             Direction::Left => { position.vec.x > 0 },
+    //             Direction::Right => { position.vec.x < grid_size },
+    //             Direction::Up => { position.vec.y < grid_size },
+    //             Direction::Down => { position.vec.y > 0 },
+    //             Direction::None => { true },
+    //         }
+    //     }
+    // }
 }
 
-// Define function like this:
+
+fn is_move_inside_grid_bounds(position: Position, direction: Direction, grid_size: u32) -> bool {
+    match direction {
+        Direction::Left => { position.vec.x > 0 },
+        Direction::Right => { position.vec.x < grid_size },
+        Direction::Up => { position.vec.y < grid_size },
+        Direction::Down => { position.vec.y > 0 },
+        Direction::None => { true },
+    }
+}
+
 fn next_position(mut position: Position, direction: Direction) -> Position {
     match direction {
         Direction::None => { return position; },

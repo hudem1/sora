@@ -1,0 +1,15 @@
+kind = "DojoModel"
+class_hash = "0x22e95f68b0c997692ea80b6c55efb33b8351f67b23cda5dedbdfa2260d7e852"
+original_class_hash = "0x22e95f68b0c997692ea80b6c55efb33b8351f67b23cda5dedbdfa2260d7e852"
+abi = "manifests/dev/abis/base/models/dojo_starter_models_world_settings_world_settings.json"
+name = "dojo_starter::models::world_settings::world_settings"
+
+[[members]]
+name = "settings_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "grid_size"
+type = "u32"
+key = false

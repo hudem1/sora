@@ -1,6 +1,6 @@
 kind = "DojoContract"
-class_hash = "0x118b64198f453045d3142380ca8bd94fd5f2d2d89edf105ed2c3201649a95cd"
-original_class_hash = "0x118b64198f453045d3142380ca8bd94fd5f2d2d89edf105ed2c3201649a95cd"
+class_hash = "0x4ff0ce5dc84031fee90d73e75c592ac963d38cfdb391c78f350f183300bfa25"
+original_class_hash = "0x4ff0ce5dc84031fee90d73e75c592ac963d38cfdb391c78f350f183300bfa25"
 base_class_hash = "0x0"
 abi = "manifests/dev/abis/base/contracts/dojo_starter_systems_actions_actions.json"
 reads = []

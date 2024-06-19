@@ -7,6 +7,7 @@ mod models {
     mod path;
     mod position;
     mod tile;
+    mod world_settings;
 }
 
 mod tests {

@@ -1,0 +1,25 @@
+kind = "DojoModel"
+class_hash = "0x3f08e80f7dbdd85355bc45b663b06aab29ee7c555343f0f50032a9460b109e2"
+original_class_hash = "0x3f08e80f7dbdd85355bc45b663b06aab29ee7c555343f0f50032a9460b109e2"
+abi = "manifests/dev/abis/base/models/dojo_starter_models_tile_tile.json"
+name = "dojo_starter::models::tile::tile"
+
+[[members]]
+name = "_coords"
+type = "Vec2"
+key = true
+
+[[members]]
+name = "coords"
+type = "Vec2"
+key = false
+
+[[members]]
+name = "nature"
+type = "CaseNature"
+key = false
+
+[[members]]
+name = "allocated"
+type = "Option<ContractAddress>"
+key = false
