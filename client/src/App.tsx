@@ -5,6 +5,7 @@ import "./App.css";
 import { Direction } from "./utils";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useDojo } from "./dojo/useDojo";
+import Grid from "./components/grid/Grid";
 
 function App() {
     const {
@@ -58,104 +59,10 @@ function App() {
     }, [clipboardStatus.message]);
 
     return (
-        <>
-            <button onClick={() => account?.create()}>
-                {account?.isDeploying ? "deploying burner" : "create burner"}
-            </button>
-            {account && account?.list().length > 0 && (
-                <button onClick={async () => await account?.copyToClipboard()}>
-                    Save Burners to Clipboard
-                </button>
-            )}
-            <button onClick={handleRestoreBurners}>
-                Restore Burners from Clipboard
-            </button>
-            {clipboardStatus.message && (
-                <div className={clipboardStatus.isError ? "error" : "success"}>
-                    {clipboardStatus.message}
-                </div>
-            )}
-
-            <div className="card">
-                <div>{`burners deployed: ${account.count}`}</div>
-                <div>
-                    select signer:{" "}
-                    <select
-                        value={account ? account.account.address : ""}
-                        onChange={(e) => account.select(e.target.value)}
-                    >
-                        {account?.list().map((account, index) => {
-                            return (
-                                <option value={account.address} key={index}>
-                                    {account.address}
-                                </option>
-                            );
-                        })}
-                    </select>
-                </div>
-                <div>
-                    <button onClick={() => account.clear()}>
-                        Clear burners
-                    </button>
-                    <p>
-                        You will need to Authorise the contracts before you can
-                        use a burner. See readme.
-                    </p>
-                </div>
-            </div>
-
-            <div className="card">
-                <button onClick={() => spawn(account.account)}>Spawn</button>
-                <div>
-                    Moves Left: {moves ? `${moves.remaining}` : "Need to Spawn"}
-                </div>
-                <div>
-                    Position:{" "}
-                    {position
-                        ? `${position?.vec.x}, ${position?.vec.y}`
-                        : "Need to Spawn"}
-                </div>
-
-                <div>{moves && moves.last_direction}</div>
-            </div>
-
-            <div className="card">
-                <div>
-                    <button
-                        onClick={() =>
-                            position && position.vec.y > 0
-                                ? move(account.account, Direction.Up)
-                                : console.log("Reach the borders of the world.")
-                        }
-                    >
-                        Move Up
-                    </button>
-                </div>
-                <div>
-                    <button
-                        onClick={() =>
-                            position && position.vec.x > 0
-                                ? move(account.account, Direction.Left)
-                                : console.log("Reach the borders of the world.")
-                        }
-                    >
-                        Move Left
-                    </button>
-                    <button
-                        onClick={() => move(account.account, Direction.Right)}
-                    >
-                        Move Right
-                    </button>
-                </div>
-                <div>
-                    <button
-                        onClick={() => move(account.account, Direction.Down)}
-                    >
-                        Move Down
-                    </button>
-                </div>
-            </div>
-        </>
+        <div className="App">
+            <h1>Game Grid</h1>
+            <Grid rows={10} cols={10} />
+      </div>
     );
 }
 
