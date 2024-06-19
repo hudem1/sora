@@ -2,58 +2,100 @@
 
 import { defineComponent, Type as RecsType, World } from "@dojoengine/recs";
 
-export type ContractComponents = Awaited<
-    ReturnType<typeof defineContractComponents>
->;
+export type ContractComponents = Awaited<ReturnType<typeof defineContractComponents>>;
 
 export function defineContractComponents(world: World) {
-    return {
-        DirectionsAvailable: (() => {
-            return defineComponent(
-                world,
-                { player: RecsType.BigInt, directions: RecsType.StringArray },
-                {
-                    metadata: {
-                        name: "DirectionsAvailable",
-                        types: ["contractaddress"],
-                        customTypes: [],
-                    },
-                }
-            );
-        })(),
-        Moves: (() => {
-            return defineComponent(
-                world,
-                {
-                    player: RecsType.BigInt,
-                    remaining: RecsType.Number,
-                    last_direction: RecsType.Number,
-                    can_move: RecsType.Boolean,
-                },
-                {
-                    metadata: {
-                        name: "Moves",
-                        types: ["contractaddress", "u8", "enum", "bool"],
-                        customTypes: ["Direction"],
-                    },
-                }
-            );
-        })(),
-        Position: (() => {
-            return defineComponent(
-                world,
-                {
-                    player: RecsType.BigInt,
-                    vec: { x: RecsType.Number, y: RecsType.Number },
-                },
-                {
-                    metadata: {
-                        name: "Position",
-                        types: ["contractaddress", "u32", "u32"],
-                        customTypes: ["Vec2"],
-                    },
-                }
-            );
-        })(),
-    };
+  return {
+    DirectionsAvailable: (() => {
+      return defineComponent(
+        world,
+        { player: RecsType.BigInt, directions: RecsType.StringArray },
+        {
+          metadata: {
+            name: "DirectionsAvailable",
+            types: ["contractaddress"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+    Moves: (() => {
+      return defineComponent(
+        world,
+        { player: RecsType.BigInt, last_direction: RecsType.Number, can_move: RecsType.Boolean },
+        {
+          metadata: {
+            name: "Moves",
+            types: ["contractaddress","enum","bool"],
+            customTypes: ["Direction"],
+          },
+        }
+      );
+    })(),
+    Path: (() => {
+      return defineComponent(
+        world,
+        { player: RecsType.BigInt, tiles: RecsType.Number, end_time: RecsType.Number },
+        {
+          metadata: {
+            name: "Path",
+            types: ["contractaddress","enum","enum"],
+            customTypes: ["Option<T>","Option<T>"],
+          },
+        }
+      );
+    })(),
+    Position: (() => {
+      return defineComponent(
+        world,
+        { player: RecsType.BigInt, vec: { x: RecsType.Number, y: RecsType.Number } },
+        {
+          metadata: {
+            name: "Position",
+            types: ["contractaddress","u32","u32"],
+            customTypes: ["Vec2"],
+          },
+        }
+      );
+    })(),
+    Tile: (() => {
+      return defineComponent(
+        world,
+        { _coords: { x: RecsType.Number, y: RecsType.Number }, coords: { x: RecsType.Number, y: RecsType.Number }, nature: RecsType.Number, allocated: RecsType.Number },
+        {
+          metadata: {
+            name: "Tile",
+            types: ["u32","u32","u32","u32","enum","enum"],
+            customTypes: ["Vec2","Vec2","CaseNature","Option<T>"],
+          },
+        }
+      );
+    })(),
+    WorldSettings: (() => {
+      return defineComponent(
+        world,
+        { settings_id: RecsType.Number, grid_size: RecsType.Number },
+        {
+          metadata: {
+            name: "WorldSettings",
+            types: ["u32","u32"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+    Moved: (() => {
+      return defineComponent(
+        world,
+        { player: RecsType.BigInt, direction: RecsType.Number },
+        {
+          metadata: {
+            name: "Moved",
+            types: ["contractaddress","enum"],
+            customTypes: ["Direction"],
+          },
+        }
+      );
+    })(),
+  };
 }
