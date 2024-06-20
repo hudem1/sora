@@ -32,6 +32,25 @@ export function createSystemCalls(
         }
     };
 
+    const init_grid = async (account: AccountInterface, grid_size: number) => {
+        try {
+            const { transaction_hash } = await client.actions.init_grid({
+                account,
+                grid_size,
+            });
+
+            console.log(
+                await account.waitForTransaction(transaction_hash, {
+                    retryInterval: 100,
+                })
+            );
+
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+        } catch (e) {
+            console.log(e);
+        }
+    };
+
     const move = async (account: AccountInterface, direction: Direction) => {
         const entityId = getEntityIdFromKeys([
             BigInt(account.address),
@@ -89,5 +108,6 @@ export function createSystemCalls(
     return {
         spawn,
         move,
+        init_grid,
     };
 }

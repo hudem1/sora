@@ -11,12 +11,10 @@ export interface MoveProps {
     direction: Direction;
 }
 
-/*
 export interface InitGridProps {
     account: Account | AccountInterface;
     grid_size: number;
 }
-*/
 
 export async function setupWorld(provider: DojoProvider) {
     function actions() {
@@ -46,7 +44,6 @@ export async function setupWorld(provider: DojoProvider) {
             }
         };
 
-        /*
         const init_grid = async ({ account, grid_size }: InitGridProps) => {
             try {
                 return await provider.execute(account, {
@@ -59,9 +56,8 @@ export async function setupWorld(provider: DojoProvider) {
                 throw error;
             }
         }
-        */
 
-        return { spawn, move };
+        return { spawn, move, init_grid };
     }
 
     return {
