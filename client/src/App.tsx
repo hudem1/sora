@@ -12,7 +12,10 @@ const worldEntityId = getEntityIdFromKeys([BigInt(WORLD_SETTINGS_ID)]);
 
 function App() {
     const {
-        setup: { clientComponents: { WorldSettings }, },
+        setup: {
+            systemCalls: { spawn, move, init_grid },
+            clientComponents: { WorldSettings },
+        },
         account,
     } = useDojo();
 
@@ -34,6 +37,8 @@ function App() {
 
     return (
         <div className="App">
+            <button onClick={() => init_grid(account.account, 10)}>Init grid</button>
+            <button onClick={() => spawn(account.account)}>Spawn</button>
             <h1>Game Grid</h1>
             {grid_size && <Grid rows={grid_size} cols={grid_size} />}
       </div>
