@@ -7,5 +7,5 @@ struct Path {
     #[key]
     player: ContractAddress,
     tiles: Option<Span<Vec2>>,
-    end_time: Option<u32>
+    end_time: Option<u64>
 }

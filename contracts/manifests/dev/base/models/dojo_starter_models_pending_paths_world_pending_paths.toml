@@ -1,0 +1,15 @@
+kind = "DojoModel"
+class_hash = "0x7ac36ee4d932c81e45218f0657190fd735c87cebd9acff654e86f11ff9224cc"
+original_class_hash = "0x7ac36ee4d932c81e45218f0657190fd735c87cebd9acff654e86f11ff9224cc"
+abi = "manifests/dev/abis/base/models/dojo_starter_models_pending_paths_world_pending_paths.json"
+name = "dojo_starter::models::pending_paths::world_pending_paths"
+
+[[members]]
+name = "paths_id"
+type = "u32"
+key = true
+
+[[members]]
+name = "pending_paths"
+type = "Array<ContractAddress>"
+key = false

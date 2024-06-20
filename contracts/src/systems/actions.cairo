@@ -1,5 +1,6 @@
 use dojo_starter::models::moves::Direction;
 use dojo_starter::models::position::Position;
+use dojo_starter::models::tile::Vec2;
 
 // define the interface
 #[dojo::interface]
@@ -9,17 +10,20 @@ trait IActions {
     // fn test_set_tile_alloc(ref world: IWorldDispatcher);
     // fn test_set_tile_unalloc(ref world: IWorldDispatcher);
     fn move(ref world: IWorldDispatcher, direction: Direction);
+    fn verify_path(ref world: IWorldDispatcher, path: Array<Vec2>);
 }
 
 // dojo decorator
 #[dojo::contract]
 mod actions {
     use super::{IActions, is_move_inside_grid_bounds, next_position};
-    use starknet::{ContractAddress, get_caller_address};
+    use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
     use dojo_starter::models::{
         position::{Position}, moves::{Moves, Direction, DirectionsAvailable},
-        world_settings::{WorldSettings, SETTINGS_ID}, tile::{Tile, Vec2, CaseNature}
+        world_settings::{WorldSettings, SETTINGS_ID}, tile::{Tile, Vec2, CaseNature},
+        path::Path, pending_paths::{WorldPendingPaths, WORLD_PENDING_PATHS_ID, PendingPath},
     };
+    use core::array::ArrayTrait;
 
     #[derive(Copy, Drop, Serde)]
     #[dojo::model]
@@ -147,6 +151,42 @@ mod actions {
             set!(world, (moves, next_pos, tile, next_tile));
             // Emit an event to the world to notify about the player's move.
             emit!(world, (Moved { player, direction }));
+        }
+
+        fn verify_path(ref world: IWorldDispatcher, mut path: Array<Vec2>) {
+            let player = get_caller_address();
+            let path_span = path.span();
+
+            let mut is_path_free = true;
+            while let Option::Some(coords) = path.pop_front() {
+                let tile = get!(world, (coords.x, coords.y), (Tile));
+                if tile.allocated.is_some() {
+                    is_path_free = false;
+                    break;
+                }
+            };
+
+            if is_path_free {
+                // move at a speed of 1 tile every second
+                let end_time = get_block_timestamp() + path_span.len().into() * 1000;
+                set!(world, (
+                    Path {
+                        player,
+                        tiles: Option::Some(path_span),
+                        end_time: Option::Some(end_time)
+                    }
+                ));
+            } else {
+               set!(world, (PendingPath {
+                    player,
+                    path: Option::Some(path_span)
+                }));
+
+                let mut world_pending_paths = get!(world, WORLD_PENDING_PATHS_ID, (WorldPendingPaths));
+                world_pending_paths.pending_paths.append(player);
+
+                set!(world, (world_pending_paths));
+            }
         }
     }
 // #[generate_trait]

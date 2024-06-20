@@ -5,6 +5,7 @@ mod systems {
 mod models {
     mod moves;
     mod path;
+    mod pending_paths;
     mod position;
     mod tile;
     mod world_settings;

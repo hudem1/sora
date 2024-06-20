@@ -1,0 +1,15 @@
+kind = "DojoModel"
+class_hash = "0x309cb4ab77a059e0505993143322ed53f6862bb6715745cc25c642b8c470805"
+original_class_hash = "0x309cb4ab77a059e0505993143322ed53f6862bb6715745cc25c642b8c470805"
+abi = "manifests/dev/abis/base/models/dojo_starter_models_pending_paths_pending_path.json"
+name = "dojo_starter::models::pending_paths::pending_path"
+
+[[members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[members]]
+name = "path"
+type = "Option<Span<Vec2>>"
+key = false
