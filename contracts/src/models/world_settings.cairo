@@ -1,4 +1,3 @@
-
 const SETTINGS_ID: u32 = 999;
 
 #[derive(Copy, Drop, Serde)]

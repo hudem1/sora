@@ -15,7 +15,8 @@ mod actions {
     use super::{IActions, is_move_inside_grid_bounds, next_position};
     use starknet::{ContractAddress, get_caller_address};
     use dojo_starter::models::{
-        position::{Position}, moves::{Moves, Direction, DirectionsAvailable}, world_settings::{WorldSettings, SETTINGS_ID}, tile::{Tile, Vec2, CaseNature}
+        position::{Position}, moves::{Moves, Direction, DirectionsAvailable},
+        world_settings::{WorldSettings, SETTINGS_ID}, tile::{Tile, Vec2, CaseNature}
     };
 
     #[derive(Copy, Drop, Serde)]
@@ -40,15 +41,13 @@ mod actions {
                 while col < grid_size {
                     set!(
                         world,
-                        (
-                            Tile {
-                                // not stored, only used for computing storage address
-                                _coords: Vec2 { x: row_i, y: col },
-                                coords: Vec2 { x: row_i, y: col },
-                                nature: CaseNature::Road,
-                                allocated: Option::None,
-                            }
-                        )
+                        (Tile {
+                            // not stored, only used for computing storage address
+                            _coords: Vec2 { x: row_i, y: col },
+                            coords: Vec2 { x: row_i, y: col },
+                            nature: CaseNature::Road,
+                            allocated: Option::None,
+                        })
                     );
                     col += 1;
                 };
@@ -117,19 +116,18 @@ mod actions {
             emit!(world, (Moved { player, direction }));
         }
     }
-
-    // #[generate_trait]
-    // impl ActionsInternImpl of ActionsIntern {
-    //     fn is_move_inside_grid_bounds(position: Position, direction: Direction, grid_size: u32) -> bool {
-    //         match direction {
-    //             Direction::Left => { position.vec.x > 0 },
-    //             Direction::Right => { position.vec.x < grid_size },
-    //             Direction::Up => { position.vec.y < grid_size },
-    //             Direction::Down => { position.vec.y > 0 },
-    //             Direction::None => { true },
-    //         }
-    //     }
-    // }
+// #[generate_trait]
+// impl ActionsInternImpl of ActionsIntern {
+//     fn is_move_inside_grid_bounds(position: Position, direction: Direction, grid_size: u32) -> bool {
+//         match direction {
+//             Direction::Left => { position.vec.x > 0 },
+//             Direction::Right => { position.vec.x < grid_size },
+//             Direction::Up => { position.vec.y < grid_size },
+//             Direction::Down => { position.vec.y > 0 },
+//             Direction::None => { true },
+//         }
+//     }
+// }
 }
 
 
