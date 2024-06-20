@@ -46,7 +46,7 @@ const Cell = ({x, y}: CellProps) => {
 
   return (
     <div className="grid-cell" style={{ backgroundColor: bgColor }}>
-      {tile?.allocated == 'Some' ? 'X' : ''}
+      {tile?.allocated == 'Some' ? 'X' : '.'}
     </div>
   );
 };

@@ -12,7 +12,7 @@ export type SystemCalls = ReturnType<typeof createSystemCalls>;
 export function createSystemCalls(
     { client }: { client: IWorld },
     _contractComponents: ContractComponents,
-    { Position, Moves }: ClientComponents
+    { Position, Moves, Tile }: ClientComponents
 ) {
     const spawn = async (account: AccountInterface) => {
         try {
@@ -78,6 +78,34 @@ export function createSystemCalls(
         //     },
         // });
 
+        const current_pos = getComponentValue(Position, entityId)!;
+
+        const next_pos = updatePositionWithDirection(direction, current_pos as any);
+
+        const currentTileEntity = getEntityIdFromKeys([
+            BigInt(current_pos?.vec.x), BigInt(current_pos.vec.y)
+        ]) as Entity;
+
+        const currentTileId = uuid();
+        Tile.addOverride(currentTileId, {
+            entity: currentTileEntity,
+            value: {
+                allocated: 'None' as any
+            },
+        });
+
+        const nextTileEntity = getEntityIdFromKeys([
+            BigInt(next_pos?.vec.x), BigInt(next_pos.vec.y)
+        ]) as Entity;
+
+        const nextTileId = uuid();
+        Tile.addOverride(nextTileId, {
+            entity: nextTileEntity,
+            value: {
+                allocated: 'Some' as any
+            },
+        });
+
         try {
             const { transaction_hash } = await client.actions.move({
                 account,
@@ -99,7 +127,11 @@ export function createSystemCalls(
             console.log(e);
             // Position.removeOverride(positionId);
             // Moves.removeOverride(movesId);
+            Tile.removeOverride(currentTileId);
+            Tile.removeOverride(nextTileId);
         } finally {
+            Tile.removeOverride(currentTileId);
+            Tile.removeOverride(nextTileId);
             // Position.removeOverride(positionId);
             // Moves.removeOverride(movesId);
         }
