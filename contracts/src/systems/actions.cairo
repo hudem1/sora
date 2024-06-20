@@ -66,24 +66,27 @@ mod actions {
 
             // Set the player's position at the center of the grid
             // Set available directions to all four directions.
-
-            let directions_available = DirectionsAvailable {
-                player,
-                directions: array![
-                    Direction::Up, Direction::Right, Direction::Down, Direction::Left
-                ],
+            let spawn_pos = Vec2 {
+                x: world_settings.grid_size / 2, y: world_settings.grid_size / 2
             };
 
             set!(
                 world,
                 (
-                    Moves {
-                        player, last_direction: Direction::None(()), can_move: true
+                    Moves { player, last_direction: Direction::None(()), can_move: true },
+                    Position { player, vec: spawn_pos },
+                    DirectionsAvailable {
+                        player,
+                        directions: array![
+                            Direction::Up, Direction::Right, Direction::Down, Direction::Left
+                        ],
                     },
-                    Position {
-                        player, vec: Vec2 { x: world_settings.grid_size / 2, y: world_settings.grid_size / 2 }
-                    },
-                    directions_available
+                    Tile {
+                        _coords: spawn_pos,
+                        coords: spawn_pos,
+                        nature: CaseNature::Road,
+                        allocated: Option::Some(player),
+                    }
                 )
             );
         }
