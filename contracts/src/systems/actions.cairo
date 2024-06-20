@@ -63,11 +63,12 @@ mod actions {
             // Get the address of the current caller, possibly the player's address.
             let player = get_caller_address();
 
-            // Set the player's position at the center of the grid
-            // Set available directions to all four directions.
             let spawn_pos = Vec2 {
                 x: world_settings.grid_size / 2, y: world_settings.grid_size / 2
             };
+
+            let mut tile = get!(world, (world_settings.grid_size / 2, world_settings.grid_size / 2), (Tile));
+            tile.allocated = Option::Some(player);
 
             set!(
                 world,
@@ -80,12 +81,7 @@ mod actions {
                             Direction::Up, Direction::Right, Direction::Down, Direction::Left
                         ],
                     },
-                    Tile {
-                        _coords: spawn_pos,
-                        coords: spawn_pos,
-                        nature: CaseNature::Road,
-                        allocated: Option::Some(player),
-                    }
+                    tile,
                 )
             );
         }

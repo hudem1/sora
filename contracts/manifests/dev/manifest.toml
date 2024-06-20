@@ -31,6 +31,9 @@ writes = [
     "Position",
     "Moves",
     "DirectionsAvailable",
+    "Tile",
+    "Path",
+    "WorldSettings",
 ]
 computed = []
 init_calldata = []

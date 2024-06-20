@@ -42,8 +42,25 @@ This starter project is a constant work in progress and contributions are greatl
 Happy coding!
 
 
+
+
+
 > init grid:
 ```bash
 sozo execute <system_contract_address> init_grid -c 10
 ```
 
+---
+
+> Grant access for `actions` system contract to write to Tile model: \
+> by default, the contract deployer, therefore the person who registered the models, is the owner of the resource. Therefore, we can grant writer access with:
+```bash
+sozo auth grant writer Tile,0x3610b797baec740e2fa25ae90b4a57d92b04f48a1fdbae1ae203eaf9723c1a0
+```
+> But in our project, for the `actions` contract, we automatically give writer access to all models in `manifests/dev/overlays/contracts/dojo_starter_systems_actions_actions.toml`.
+
+
+> to quickly get the state of a Tile:
+```bash
+sozo model get Tile 5,5
+```
