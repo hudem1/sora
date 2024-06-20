@@ -6,6 +6,8 @@ use dojo_starter::models::position::Position;
 trait IActions {
     fn init_grid(ref world: IWorldDispatcher, grid_size: u32);
     fn spawn(ref world: IWorldDispatcher);
+    // fn test_set_tile_alloc(ref world: IWorldDispatcher);
+    // fn test_set_tile_unalloc(ref world: IWorldDispatcher);
     fn move(ref world: IWorldDispatcher, direction: Direction);
 }
 
@@ -86,6 +88,30 @@ mod actions {
             );
         }
 
+        // fn test_set_tile_alloc(ref world: IWorldDispatcher) {
+        //     let player = get_caller_address();
+
+        //     let player_felt252: felt252 = player.into();
+        //     println!("--- player in alloc: {player_felt252}");
+
+        //     let world_settings: WorldSettings = get!(world, SETTINGS_ID, (WorldSettings));
+        //     let mut tile = get!(world, (world_settings.grid_size / 2, world_settings.grid_size / 2), (Tile));
+        //     tile.allocated = Option::Some(player);
+        //     set!(world, (tile));
+        // }
+
+        // fn test_set_tile_unalloc(ref world: IWorldDispatcher) {
+        //     let player = get_caller_address();
+
+        //     let player_felt252: felt252 = player.into();
+        //     println!("--- player in unalloc: {player_felt252}");
+
+        //     let world_settings: WorldSettings = get!(world, SETTINGS_ID, (WorldSettings));
+        //     let mut tile = get!(world, (world_settings.grid_size / 2, world_settings.grid_size / 2), (Tile));
+        //     tile.allocated = Option::None;
+        //     set!(world, (tile));
+        // }
+
         fn move(ref world: IWorldDispatcher, direction: Direction) {
             let world_settings: WorldSettings = get!(world, SETTINGS_ID, (WorldSettings));
             assert(world_settings.grid_size > 0, 'must first initialize grid');
@@ -104,10 +130,19 @@ mod actions {
                 is_move_inside_grid_bounds(position, direction, world_settings.grid_size),
                 'illegal move: out of bounds'
             );
-            let next = next_position(position, direction);
+
+            let next: Position = next_position(position, direction);
+
+            let mut tile = get!(world, (next.vec.x, next.vec.y), (Tile));
+            assert(
+                tile.allocated == Option::None,
+                'illegal move: tile is allocated'
+            );
+
+            tile.allocated = Option::Some(player);
 
             // Update the world state with the new moves data and position.
-            set!(world, (moves, next));
+            set!(world, (moves, next, tile));
             // Emit an event to the world to notify about the player's move.
             emit!(world, (Moved { player, direction }));
         }
@@ -130,8 +165,8 @@ mod actions {
 fn is_move_inside_grid_bounds(position: Position, direction: Direction, grid_size: u32) -> bool {
     match direction {
         Direction::Left => { position.vec.x > 0 },
-        Direction::Right => { position.vec.x < grid_size },
-        Direction::Up => { position.vec.y < grid_size },
+        Direction::Right => { position.vec.x < grid_size - 1 },
+        Direction::Up => { position.vec.y < grid_size - 1 },
         Direction::Down => { position.vec.y > 0 },
         Direction::None => { true },
     }
@@ -145,5 +180,6 @@ fn next_position(mut position: Position, direction: Direction) -> Position {
         Direction::Up => { position.vec.y -= 1; },
         Direction::Down => { position.vec.y += 1; },
     };
+
     position
 }
