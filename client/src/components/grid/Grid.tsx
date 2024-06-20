@@ -1,22 +1,20 @@
-import React, { FC } from 'react';
+import React from 'react';
 import './Grid.css';
+import Cell from '../cell/Cell';
 
 interface GridProps {
   rows: number;
   cols: number;
 }
 
-const Grid: FC<GridProps> = ({ rows, cols }) => {
-  const grid = Array.from({ length: rows }, () => Array.from({ length: cols }, () => 0));
+const Grid = ({rows, cols}: GridProps) => {
 
   return (
     <div className="grid">
-      {grid.map((row, rowIndex) => (
+      {Array.from({length: rows}).map((_, rowIndex) => (
         <div key={rowIndex} className="grid-row">
-          {row.map((cell, colIndex) => (
-            <div key={colIndex} className="grid-cell">
-              {cell}
-            </div>
+          {Array.from({length: cols}).map((_, colIndex) => (
+            <Cell key={rowIndex.toString() + colIndex.toString()}  x={rowIndex} y={colIndex} />
           ))}
         </div>
       ))}

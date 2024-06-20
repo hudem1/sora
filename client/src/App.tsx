@@ -7,61 +7,35 @@ import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { useDojo } from "./dojo/useDojo";
 import Grid from "./components/grid/Grid";
 
+const WORLD_SETTINGS_ID = 999;
+const worldEntityId = getEntityIdFromKeys([BigInt(WORLD_SETTINGS_ID)]);
+
 function App() {
     const {
-        setup: {
-            systemCalls: { spawn, move },
-            clientComponents: { Position, Moves, DirectionsAvailable },
-        },
+        setup: { clientComponents: { WorldSettings }, },
         account,
     } = useDojo();
-
-    const [clipboardStatus, setClipboardStatus] = useState({
-        message: "",
-        isError: false,
-    });
 
     // entity id we are syncing
     const entityId = getEntityIdFromKeys([
         BigInt(account?.account.address),
     ]) as Entity;
 
+
     // get current component values
-    const position = useComponentValue(Position, entityId);
-    const moves = useComponentValue(Moves, entityId);
-    const directions = useComponentValue(DirectionsAvailable, entityId);
+    // const position = useComponentValue(Position, entityId);
+    // const directions = useComponentValue(DirectionsAvailable, entityId);
 
-    console.log(moves);
+    const grid_size = useComponentValue(WorldSettings, worldEntityId)?.grid_size;
+    console.log('grid_size---');
+    console.log(grid_size);
 
-    const handleRestoreBurners = async () => {
-        try {
-            await account?.applyFromClipboard();
-            setClipboardStatus({
-                message: "Burners restored successfully!",
-                isError: false,
-            });
-        } catch (error) {
-            setClipboardStatus({
-                message: `Failed to restore burners from clipboard`,
-                isError: true,
-            });
-        }
-    };
-
-    useEffect(() => {
-        if (clipboardStatus.message) {
-            const timer = setTimeout(() => {
-                setClipboardStatus({ message: "", isError: false });
-            }, 3000);
-
-            return () => clearTimeout(timer);
-        }
-    }, [clipboardStatus.message]);
+    // console.log(moves);
 
     return (
         <div className="App">
             <h1>Game Grid</h1>
-            <Grid rows={10} cols={10} />
+            {grid_size && <Grid rows={grid_size} cols={grid_size} />}
       </div>
     );
 }
