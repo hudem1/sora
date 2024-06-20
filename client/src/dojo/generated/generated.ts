@@ -11,6 +11,13 @@ export interface MoveProps {
     direction: Direction;
 }
 
+/*
+export interface InitGridProps {
+    account: Account | AccountInterface;
+    grid_size: number;
+}
+*/
+
 export async function setupWorld(provider: DojoProvider) {
     function actions() {
         const spawn = async ({ account }: { account: AccountInterface }) => {
@@ -38,8 +45,25 @@ export async function setupWorld(provider: DojoProvider) {
                 throw error;
             }
         };
+
+        /*
+        const init_grid = async ({ account, grid_size }: InitGridProps) => {
+            try {
+                return await provider.execute(account, {
+                    contractName: "actions",
+                    entrypoint: "init_grid",
+                    calldata: [grid_size],
+                });
+            } catch (error) {
+                console.error("Error executing init grid:", error);
+                throw error;
+            }
+        }
+        */
+
         return { spawn, move };
     }
+
     return {
         actions: actions(),
     };

@@ -54,8 +54,8 @@ export function createSystemCalls(
             entity: entityId,
             value: {
                 player: BigInt(entityId),
-                remaining:
-                    (getComponentValue(Moves, entityId)?.remaining || 0) - 1,
+                // remaining:
+                //     (getComponentValue(Moves, entityId)?.remaining || 0) - 1,
             },
         });
 

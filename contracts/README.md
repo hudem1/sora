@@ -40,3 +40,10 @@ This starter project is a constant work in progress and contributions are greatl
    - It can't get better then this, your pull request will be appreciated by the community.
 
 Happy coding!
+
+
+> init grid:
+```bash
+sozo execute <system_contract_address> init_grid -c 10
+```
+
