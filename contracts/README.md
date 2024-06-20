@@ -64,3 +64,14 @@ sozo auth grant writer Tile,0x3610b797baec740e2fa25ae90b4a57d92b04f48a1fdbae1ae2
 ```bash
 sozo model get Tile 5,5
 ```
+
+> to start the katana json-rpc server:
+```bash
+katana --disable-fee  --allowed-origins "*"
+```
+
+> to start the torii indexer:
+```bash
+torii --world 0xb4079627ebab1cd3cf9fd075dda1ad2454a7a448bf659591f259efa2519b18 --allowed-origins "*"
+```
+
