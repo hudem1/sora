@@ -37,16 +37,16 @@ mod actions {
 
             set!(world, (WorldSettings { settings_id: SETTINGS_ID, grid_size }));
 
-            let mut row_i = 0;
-            while row_i < grid_size {
+            let mut row = 0;
+            while row < grid_size {
                 let mut col = 0;
                 while col < grid_size {
                     set!(
                         world,
                         (Tile {
                             // not stored, only used for computing storage address
-                            _coords: Vec2 { x: row_i, y: col },
-                            coords: Vec2 { x: row_i, y: col },
+                            _coords: Vec2 { y: row, x: col },
+                            coords: Vec2 { y: row, x: col },
                             nature: CaseNature::Road,
                             allocated: Option::None,
                         })
@@ -54,7 +54,7 @@ mod actions {
                     col += 1;
                 };
 
-                row_i += 1;
+                row += 1;
             };
         }
 
@@ -121,28 +121,30 @@ mod actions {
 
             // Retrieve the player's current position and moves data from the world.
             let (mut position, mut moves) = get!(world, player, (Position, Moves));
+            let mut tile = get!(world, (position.vec.x, position.vec.y), (Tile));
 
             // Update the last direction the player moved in.
             moves.last_direction = direction;
 
-            // Calculate the player's next position based on the provided direction.
             assert(
                 is_move_inside_grid_bounds(position, direction, world_settings.grid_size),
                 'illegal move: out of bounds'
             );
 
-            let next: Position = next_position(position, direction);
+            // Calculate the player's next position based on the provided direction.
+            let next_pos: Position = next_position(position, direction);
 
-            let mut tile = get!(world, (next.vec.x, next.vec.y), (Tile));
+            let mut next_tile = get!(world, (next_pos.vec.x, next_pos.vec.y), (Tile));
             assert(
-                tile.allocated == Option::None,
+                next_tile.allocated.is_none(),
                 'illegal move: tile is allocated'
             );
 
-            tile.allocated = Option::Some(player);
+            tile.allocated = Option::None;
+            next_tile.allocated = Option::Some(player);
 
-            // Update the world state with the new moves data and position.
-            set!(world, (moves, next, tile));
+            // Update the world state with the new moves, position and tile data
+            set!(world, (moves, next_pos, tile, next_tile));
             // Emit an event to the world to notify about the player's move.
             emit!(world, (Moved { player, direction }));
         }
@@ -166,8 +168,8 @@ fn is_move_inside_grid_bounds(position: Position, direction: Direction, grid_siz
     match direction {
         Direction::Left => { position.vec.x > 0 },
         Direction::Right => { position.vec.x < grid_size - 1 },
-        Direction::Up => { position.vec.y < grid_size - 1 },
-        Direction::Down => { position.vec.y > 0 },
+        Direction::Up => { position.vec.y > 0 },
+        Direction::Down => { position.vec.y < grid_size - 1 },
         Direction::None => { true },
     }
 }
