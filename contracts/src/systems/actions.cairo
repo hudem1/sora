@@ -1,6 +1,7 @@
 use dojo_starter::models::moves::Direction;
 use dojo_starter::models::position::Position;
 use dojo_starter::models::tile::Vec2;
+use dojo::world::IWorldDispatcher;
 
 // define the interface
 #[dojo::interface]

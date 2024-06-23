@@ -319,8 +319,8 @@
   },
   {
     "type": "impl",
-    "name": "pathImpl",
-    "interface_name": "dojo_starter::models::path::Ipath"
+    "name": "pending_pathImpl",
+    "interface_name": "dojo_starter::models::pending_paths::Ipending_path"
   },
   {
     "type": "struct",
@@ -361,40 +361,22 @@
     ]
   },
   {
-    "type": "enum",
-    "name": "core::option::Option::<core::integer::u64>",
-    "variants": [
-      {
-        "name": "Some",
-        "type": "core::integer::u64"
-      },
-      {
-        "name": "None",
-        "type": "()"
-      }
-    ]
-  },
-  {
     "type": "struct",
-    "name": "dojo_starter::models::path::Path",
+    "name": "dojo_starter::models::pending_paths::PendingPath",
     "members": [
       {
         "name": "player",
         "type": "core::starknet::contract_address::ContractAddress"
       },
       {
-        "name": "tiles",
+        "name": "path",
         "type": "core::option::Option::<core::array::Span::<dojo_starter::models::tile::Vec2>>"
-      },
-      {
-        "name": "end_time",
-        "type": "core::option::Option::<core::integer::u64>"
       }
     ]
   },
   {
     "type": "interface",
-    "name": "dojo_starter::models::path::Ipath",
+    "name": "dojo_starter::models::pending_paths::Ipending_path",
     "items": [
       {
         "type": "function",
@@ -402,7 +384,7 @@
         "inputs": [
           {
             "name": "model",
-            "type": "dojo_starter::models::path::Path"
+            "type": "dojo_starter::models::pending_paths::PendingPath"
           }
         ],
         "outputs": [],
@@ -412,7 +394,7 @@
   },
   {
     "type": "event",
-    "name": "dojo_starter::models::path::path::Event",
+    "name": "dojo_starter::models::pending_paths::pending_path::Event",
     "kind": "enum",
     "variants": []
   }

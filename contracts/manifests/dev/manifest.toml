@@ -22,8 +22,8 @@ name = "dojo::base::base"
 [[contracts]]
 kind = "DojoContract"
 address = "0x3610b797baec740e2fa25ae90b4a57d92b04f48a1fdbae1ae203eaf9723c1a0"
-class_hash = "0x45cdca9780b08b5cfb582c90ce2e7bad3d3396ef8512251db84d6820485ec45"
-original_class_hash = "0x45cdca9780b08b5cfb582c90ce2e7bad3d3396ef8512251db84d6820485ec45"
+class_hash = "0x4fa0677599f5101029d0f0272542c98def9e9be862338a8ed47b434c80ffadf"
+original_class_hash = "0x4fa0677599f5101029d0f0272542c98def9e9be862338a8ed47b434c80ffadf"
 base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
 abi = "manifests/dev/abis/deployments/contracts/dojo_starter_systems_actions_actions.json"
 reads = []
@@ -80,8 +80,8 @@ key = false
 
 [[models]]
 kind = "DojoModel"
-class_hash = "0x5ac0385f5d2cc286d4e86b0da96c1d57a31d89ab6fdb6d7c155c98730045a60"
-original_class_hash = "0x5ac0385f5d2cc286d4e86b0da96c1d57a31d89ab6fdb6d7c155c98730045a60"
+class_hash = "0x26fbc68defa59f89209e1906b98940323e52c03b4ac611edecd6aba5e7bb427"
+original_class_hash = "0x26fbc68defa59f89209e1906b98940323e52c03b4ac611edecd6aba5e7bb427"
 abi = "manifests/dev/abis/deployments/models/dojo_starter_models_path_path.json"
 name = "dojo_starter::models::path::path"
 
@@ -97,7 +97,41 @@ key = false
 
 [[models.members]]
 name = "end_time"
-type = "Option<u32>"
+type = "Option<u64>"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x309cb4ab77a059e0505993143322ed53f6862bb6715745cc25c642b8c470805"
+original_class_hash = "0x309cb4ab77a059e0505993143322ed53f6862bb6715745cc25c642b8c470805"
+abi = "manifests/dev/abis/deployments/models/dojo_starter_models_pending_paths_pending_path.json"
+name = "dojo_starter::models::pending_paths::pending_path"
+
+[[models.members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[models.members]]
+name = "path"
+type = "Option<Span<Vec2>>"
+key = false
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x7ac36ee4d932c81e45218f0657190fd735c87cebd9acff654e86f11ff9224cc"
+original_class_hash = "0x7ac36ee4d932c81e45218f0657190fd735c87cebd9acff654e86f11ff9224cc"
+abi = "manifests/dev/abis/deployments/models/dojo_starter_models_pending_paths_world_pending_paths.json"
+name = "dojo_starter::models::pending_paths::world_pending_paths"
+
+[[models.members]]
+name = "paths_id"
+type = "u32"
+key = true
+
+[[models.members]]
+name = "pending_paths"
+type = "Array<ContractAddress>"
 key = false
 
 [[models]]
