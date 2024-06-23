@@ -32,11 +32,11 @@ export function updatePositionWithDirection(
 }
 
 export enum TileNature {
-   Grass = 1,
-   Water = 2,
-   Tree = 3,
-   Road = 4,
-   House = 5,
+   Grass = 0,
+   Water = 1,
+   Tree = 2,
+   Road = 3,
+   House = 4,
 }
 
 export const strToNature = (str: string): TileNature => {

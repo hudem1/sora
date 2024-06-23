@@ -24,15 +24,3 @@ enum TileNature {
     Road,
     House,
 }
-
-impl TileNatureIntoFelt252 of Into<TileNature, felt252> {
-    fn into(self: TileNature) -> felt252 {
-        match self {
-            TileNature::Grass => 1,
-            TileNature::Water => 2,
-            TileNature::Tree => 3,
-            TileNature::Road => 4,
-            TileNature::House => 5,
-        }
-    }
-}

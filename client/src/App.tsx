@@ -10,8 +10,14 @@ const WORLD_SETTINGS_ID = 999;
 const worldEntityId = getEntityIdFromKeys([BigInt(WORLD_SETTINGS_ID)]);
 
 const init_settings = {
-  grid_size: 2,
-  map: [1, 2, 3, 4] as TileNature[],
+  grid_size: 5,
+  map: [
+    0, 0, 0, 0, 0,
+    1, 1, 1, 1, 1,
+    2, 2, 2, 2, 2,
+    3, 3, 3, 3, 3,
+    4, 4, 4, 4, 4,
+  ] as TileNature[],
 };
 
 function App() {
@@ -33,8 +39,6 @@ function App() {
   // const directions = useComponentValue(DirectionsAvailable, entityId);
 
   const grid_size = useComponentValue(WorldSettings, worldEntityId)?.grid_size;
-  console.log("grid_size---");
-  console.log(grid_size);
 
   // console.log(moves);
 
