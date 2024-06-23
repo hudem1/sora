@@ -3,19 +3,44 @@ import './Grid.css';
 import Cell from '../cell/Cell';
 import { useDojo } from '../../dojo/useDojo';
 import { Direction } from '../../utils';
+import { getEntityIdFromKeys } from '@dojoengine/utils';
+import { useComponentValue } from '@dojoengine/react';
+import { ActivePath } from '../../App';
 
 interface GridProps {
   rows: number;
   cols: number;
+  activePath: ActivePath;
 }
 
 const Grid = ({rows, cols}: GridProps) => {
   const {
     setup: {
       systemCalls: { move },
+      clientComponents: { Path },
+      dojoProvider,
     },
     account,
   } = useDojo();
+
+  // const playerEntityId = getEntityIdFromKeys([
+  //   BigInt(account.account.address)
+  // ]);
+  // const player_path = useComponentValue(Path, playerEntityId);
+
+  // useEffect(() => {
+  //   console.log('--- player_path ---');
+  //   console.log(player_path);
+  //   // const fetchBlockTimestamp = async () => (await dojoProvider.provider.getBlock()).timestamp;
+  //   // const current_block_timestamp = fetchBlockTimestamp();
+  //   // if (current_block_timestamp < player_path?.end_time) {
+
+  //   // }
+    
+  // }, [player_path]);
+// 
+  // const current_block_timestamp = (await dojoProvider.provider.getBlock()).timestamp;
+
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {

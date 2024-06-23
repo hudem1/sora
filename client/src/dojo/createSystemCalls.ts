@@ -2,7 +2,7 @@ import { AccountInterface } from "starknet";
 import { Entity, getComponentValue } from "@dojoengine/recs";
 import { uuid } from "@latticexyz/utils";
 import { ClientComponents } from "./createClientComponents";
-import { Direction, updatePositionWithDirection } from "../utils";
+import { Direction, Vec2, updatePositionWithDirection } from "../utils";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
@@ -78,33 +78,33 @@ export function createSystemCalls(
         //     },
         // });
 
-        const current_pos = getComponentValue(Position, entityId)!;
+        // const current_pos = getComponentValue(Position, entityId)!;
 
-        const next_pos = updatePositionWithDirection(direction, current_pos as any);
+        // const next_pos = updatePositionWithDirection(direction, current_pos as any);
 
-        const currentTileEntity = getEntityIdFromKeys([
-            BigInt(current_pos?.vec.x), BigInt(current_pos.vec.y)
-        ]) as Entity;
+        // const currentTileEntity = getEntityIdFromKeys([
+        //     BigInt(current_pos?.vec.x), BigInt(current_pos.vec.y)
+        // ]) as Entity;
 
-        const currentTileId = uuid();
-        Tile.addOverride(currentTileId, {
-            entity: currentTileEntity,
-            value: {
-                allocated: 'None' as any
-            },
-        });
+        // const currentTileId = uuid();
+        // Tile.addOverride(currentTileId, {
+        //     entity: currentTileEntity,
+        //     value: {
+        //         allocated: 'None' as any
+        //     },
+        // });
 
-        const nextTileEntity = getEntityIdFromKeys([
-            BigInt(next_pos?.vec.x), BigInt(next_pos.vec.y)
-        ]) as Entity;
+        // const nextTileEntity = getEntityIdFromKeys([
+        //     BigInt(next_pos?.vec.x), BigInt(next_pos.vec.y)
+        // ]) as Entity;
 
-        const nextTileId = uuid();
-        Tile.addOverride(nextTileId, {
-            entity: nextTileEntity,
-            value: {
-                allocated: 'Some' as any
-            },
-        });
+        // const nextTileId = uuid();
+        // Tile.addOverride(nextTileId, {
+        //     entity: nextTileEntity,
+        //     value: {
+        //         allocated: 'Some' as any
+        //     },
+        // });
 
         try {
             const { transaction_hash } = await client.actions.move({
@@ -127,13 +127,33 @@ export function createSystemCalls(
             console.log(e);
             // Position.removeOverride(positionId);
             // Moves.removeOverride(movesId);
-            Tile.removeOverride(currentTileId);
-            Tile.removeOverride(nextTileId);
+            // Tile.removeOverride(currentTileId);
+            // Tile.removeOverride(nextTileId);
         } finally {
-            Tile.removeOverride(currentTileId);
-            Tile.removeOverride(nextTileId);
+            // Tile.removeOverride(currentTileId);
+            // Tile.removeOverride(nextTileId);
             // Position.removeOverride(positionId);
             // Moves.removeOverride(movesId);
+        }
+    };
+
+    const verifyPath = async (account: AccountInterface, path: number[]) => {
+        try {
+            const { transaction_hash } = await client.actions.verifyPath({
+                account,
+                path,
+            });
+
+            const res = await account.waitForTransaction(transaction_hash, {
+                retryInterval: 100,
+            })
+            console.log(res);
+
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+            return res;
+        } catch (e) {
+            console.log(e);
+            throw e;
         }
     };
 
@@ -141,5 +161,6 @@ export function createSystemCalls(
         spawn,
         move,
         init_grid,
+        verifyPath,
     };
 }

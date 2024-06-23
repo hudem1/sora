@@ -30,3 +30,9 @@ export function updatePositionWithDirection(
 
     return new_value;
 }
+
+
+export interface Vec2 {
+    x: number;
+    y: number;
+}

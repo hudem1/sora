@@ -35,12 +35,38 @@ export function defineContractComponents(world: World) {
     Path: (() => {
       return defineComponent(
         world,
-        { player: RecsType.BigInt, tiles: RecsType.Number, end_time: RecsType.Number },
+        { player: RecsType.BigInt, tiles: RecsType.StringArray, end_time: RecsType.BigInt },
         {
           metadata: {
             name: "Path",
-            types: ["contractaddress","enum","enum"],
-            customTypes: ["Option<T>","Option<T>"],
+            types: ["contractaddress","u64"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
+    PendingPath: (() => {
+      return defineComponent(
+        world,
+        { player: RecsType.BigInt, path: RecsType.Number },
+        {
+          metadata: {
+            name: "PendingPath",
+            types: ["contractaddress","enum"],
+            customTypes: ["Option<T>"],
+          },
+        }
+      );
+    })(),
+    WorldPendingPaths: (() => {
+      return defineComponent(
+        world,
+        { paths_id: RecsType.Number, pending_paths: RecsType.StringArray },
+        {
+          metadata: {
+            name: "WorldPendingPaths",
+            types: ["u32"],
+            customTypes: [],
           },
         }
       );

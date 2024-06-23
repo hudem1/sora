@@ -11,7 +11,7 @@ trait IActions {
     // fn test_set_tile_alloc(ref world: IWorldDispatcher);
     // fn test_set_tile_unalloc(ref world: IWorldDispatcher);
     fn move(ref world: IWorldDispatcher, direction: Direction);
-    fn verify_path(ref world: IWorldDispatcher, path: Array<Vec2>);
+    fn verify_path(ref world: IWorldDispatcher, path: Array<u32>) -> bool;
 }
 
 // dojo decorator
@@ -21,7 +21,7 @@ mod actions {
     use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
     use dojo_starter::models::{
         position::{Position}, moves::{Moves, Direction, DirectionsAvailable},
-        world_settings::{WorldSettings, SETTINGS_ID}, tile::{Tile, Vec2, CaseNature},
+        world_settings::{WorldSettings, SETTINGS_ID}, tile::{Tile, Vec2, CaseNature, Vec2IntoU32},
         path::Path, pending_paths::{WorldPendingPaths, WORLD_PENDING_PATHS_ID, PendingPath},
     };
     use core::array::ArrayTrait;
@@ -148,46 +148,76 @@ mod actions {
             tile.allocated = Option::None;
             next_tile.allocated = Option::Some(player);
 
+            // if is_on_path {
+            //     let mut path = get!(world, (player), (ActivePath));
+            //     let last_pos = *path.tiles.at(path.tiles.len() - 1);
+            //     if next_pos.vec.into_u32() == last_pos {
+            //         path.completed = true;
+            //         set!(world, (path));
+            //     }
+            // }
+
             // Update the world state with the new moves, position and tile data
             set!(world, (moves, next_pos, tile, next_tile));
             // Emit an event to the world to notify about the player's move.
             emit!(world, (Moved { player, direction }));
         }
 
-        fn verify_path(ref world: IWorldDispatcher, mut path: Array<Vec2>) {
+        fn verify_path(ref world: IWorldDispatcher, mut path: Array<u32>) -> bool {
+            let grid_size = get!(world, SETTINGS_ID, (WorldSettings)).grid_size;
+
             let player = get_caller_address();
-            let path_span = path.span();
+            // let path_span = path.span();
+            let path_span = path.clone();
+
+            assert(path.len() > 1, 'Path must be at least 2 tiles');
+            // let first_pos = *path.get(0).unwrap().unbox();
+            let tile_id = path.pop_front().unwrap();
+            let player_pos = get!(world, player, (Position));
+            // println!("first_pos: {:?}", first_pos);
+            // println!("player_pos: {:?}", player_pos.vec);
+            assert(tile_id == player_pos.vec.into_u32(grid_size), 'Path start position is wrong');
 
             let mut is_path_free = true;
-            while let Option::Some(coords) = path.pop_front() {
-                let tile = get!(world, (coords.x, coords.y), (Tile));
+            while let Option::Some(current_tile) = path.pop_front() {
+                let y = current_tile / grid_size;
+                let x = current_tile % grid_size;
+                assert(x < grid_size && y < grid_size, 'Path tile out of bounds');
+
+                let tile = get!(world, (x, y), (Tile));
                 if tile.allocated.is_some() {
                     is_path_free = false;
                     break;
                 }
             };
 
+            // println!("--- is_path_free: {}", is_path_free);
             if is_path_free {
                 // move at a speed of 1 tile every second
                 let end_time = get_block_timestamp() + path_span.len().into() * 1000;
                 set!(world, (
                     Path {
                         player,
-                        tiles: Option::Some(path_span),
-                        end_time: Option::Some(end_time)
+                        // tiles: Option::Some(path_span),
+                        tiles: path_span,
+                        // end_time: Option::Some(end_time)
+                        end_time: end_time,
+                        completed: false,
                     }
                 ));
             } else {
-               set!(world, (PendingPath {
-                    player,
-                    path: Option::Some(path_span)
-                }));
+            //    set!(world, (PendingPath {
+            //         player,
+            //         path: Option::Some(path_span)
+            //     }));
 
-                let mut world_pending_paths = get!(world, WORLD_PENDING_PATHS_ID, (WorldPendingPaths));
-                world_pending_paths.pending_paths.append(player);
+            //     let mut world_pending_paths = get!(world, WORLD_PENDING_PATHS_ID, (WorldPendingPaths));
+            //     world_pending_paths.pending_paths.append(player);
 
-                set!(world, (world_pending_paths));
+            //     set!(world, (world_pending_paths));
             }
+
+            is_path_free
         }
     }
 // #[generate_trait]

@@ -28,8 +28,8 @@ const Cell = ({x, y}: CellProps) => {
   ]);
 
   const tile = useComponentValue(Tile, entityId);
-  console.log('--- tile: x: ' + x + ' y: ' + y + ': ---');
-  console.log(tile);
+  // console.log('--- tile: x: ' + x + ' y: ' + y + ': ---');
+  // console.log(tile);
 
   const bgColor = useMemo(() => {
     switch (tile?.nature) {

@@ -2,7 +2,7 @@
 
 import { Account, AccountInterface } from "starknet";
 import { DojoProvider } from "@dojoengine/core";
-import { Direction } from "../../utils";
+import { Direction, Vec2 } from "../../utils";
 
 export type IWorld = Awaited<ReturnType<typeof setupWorld>>;
 
@@ -14,6 +14,12 @@ export interface MoveProps {
 export interface InitGridProps {
     account: Account | AccountInterface;
     grid_size: number;
+}
+
+export interface VerifyPathProps {
+    account: Account | AccountInterface;
+    // path: Vec2[];
+    path: number[];
 }
 
 export async function setupWorld(provider: DojoProvider) {
@@ -57,7 +63,20 @@ export async function setupWorld(provider: DojoProvider) {
             }
         }
 
-        return { spawn, move, init_grid };
+        const verifyPath = async ({ account, path }: VerifyPathProps) => {
+            try {
+                return await provider.execute(account, {
+                    contractName: "actions",
+                    entrypoint: "verify_path",
+                    calldata: [path],
+                });
+            } catch (error) {
+                console.error("Error executing verifyPath:", error);
+                throw error;
+            }
+        }
+
+        return { spawn, move, init_grid, verifyPath };
     }
 
     return {

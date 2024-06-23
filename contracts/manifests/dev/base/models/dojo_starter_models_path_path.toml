@@ -1,6 +1,6 @@
 kind = "DojoModel"
-class_hash = "0x26fbc68defa59f89209e1906b98940323e52c03b4ac611edecd6aba5e7bb427"
-original_class_hash = "0x26fbc68defa59f89209e1906b98940323e52c03b4ac611edecd6aba5e7bb427"
+class_hash = "0x4d389f510fc5b9f57c583ba03167e428fead24ceead6907d5cd16aeab8bd434"
+original_class_hash = "0x4d389f510fc5b9f57c583ba03167e428fead24ceead6907d5cd16aeab8bd434"
 abi = "manifests/dev/abis/base/models/dojo_starter_models_path_path.json"
 name = "dojo_starter::models::path::path"
 
@@ -11,10 +11,15 @@ key = true
 
 [[members]]
 name = "tiles"
-type = "Option<Span<Vec2>>"
+type = "Array<u32>"
 key = false
 
 [[members]]
 name = "end_time"
-type = "Option<u64>"
+type = "u64"
+key = false
+
+[[members]]
+name = "completed"
+type = "bool"
 key = false

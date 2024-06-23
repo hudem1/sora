@@ -1001,7 +1001,7 @@
     ],
     "address": "0xb4079627ebab1cd3cf9fd075dda1ad2454a7a448bf659591f259efa2519b18",
     "transaction_hash": "0x3a729aa09b4ad351fbc724f94c6d599037a53d7d9b5a182097a60fb09d0486c",
-    "block_number": 3,
+    "block_number": 14,
     "seed": "dojo_starter",
     "metadata": {
       "profile_name": "dev",
@@ -1020,8 +1020,8 @@
     {
       "kind": "DojoContract",
       "address": "0x3610b797baec740e2fa25ae90b4a57d92b04f48a1fdbae1ae203eaf9723c1a0",
-      "class_hash": "0x4fa0677599f5101029d0f0272542c98def9e9be862338a8ed47b434c80ffadf",
-      "original_class_hash": "0x4fa0677599f5101029d0f0272542c98def9e9be862338a8ed47b434c80ffadf",
+      "class_hash": "0x103db33e83aa4cd2fc67120e2ffcfd36428da45ea1b7064d4a81863225d9d58",
+      "original_class_hash": "0x103db33e83aa4cd2fc67120e2ffcfd36428da45ea1b7064d4a81863225d9d58",
       "base_class_hash": "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46",
       "abi": [
         {
@@ -1110,16 +1110,16 @@
           ]
         },
         {
-          "type": "struct",
-          "name": "dojo_starter::models::tile::Vec2",
-          "members": [
+          "type": "enum",
+          "name": "core::bool",
+          "variants": [
             {
-              "name": "x",
-              "type": "core::integer::u32"
+              "name": "False",
+              "type": "()"
             },
             {
-              "name": "y",
-              "type": "core::integer::u32"
+              "name": "True",
+              "type": "()"
             }
           ]
         },
@@ -1164,10 +1164,14 @@
               "inputs": [
                 {
                   "name": "path",
-                  "type": "core::array::Array::<dojo_starter::models::tile::Vec2>"
+                  "type": "core::array::Array::<core::integer::u32>"
                 }
               ],
-              "outputs": [],
+              "outputs": [
+                {
+                  "type": "core::bool"
+                }
+              ],
               "state_mutability": "external"
             }
           ]
@@ -1257,7 +1261,9 @@
         "DirectionsAvailable",
         "Tile",
         "Path",
-        "WorldSettings"
+        "WorldSettings",
+        "WorldPendingPaths",
+        "PendingPath"
       ],
       "computed": [],
       "init_calldata": [],
@@ -2112,17 +2118,17 @@
         },
         {
           "name": "tiles",
-          "type": "Option<Span<Vec2>>",
+          "type": "Array<u32>",
           "key": false
         },
         {
           "name": "end_time",
-          "type": "Option<u64>",
+          "type": "u64",
           "key": false
         }
       ],
-      "class_hash": "0x26fbc68defa59f89209e1906b98940323e52c03b4ac611edecd6aba5e7bb427",
-      "original_class_hash": "0x26fbc68defa59f89209e1906b98940323e52c03b4ac611edecd6aba5e7bb427",
+      "class_hash": "0x1bd1c9409571a759e98db15ecdd862c10d365fd68b9a79b7f132e13ad04a80b",
+      "original_class_hash": "0x1bd1c9409571a759e98db15ecdd862c10d365fd68b9a79b7f132e13ad04a80b",
       "abi": [
         {
           "type": "impl",
@@ -2449,58 +2455,6 @@
         },
         {
           "type": "struct",
-          "name": "dojo_starter::models::tile::Vec2",
-          "members": [
-            {
-              "name": "x",
-              "type": "core::integer::u32"
-            },
-            {
-              "name": "y",
-              "type": "core::integer::u32"
-            }
-          ]
-        },
-        {
-          "type": "struct",
-          "name": "core::array::Span::<dojo_starter::models::tile::Vec2>",
-          "members": [
-            {
-              "name": "snapshot",
-              "type": "@core::array::Array::<dojo_starter::models::tile::Vec2>"
-            }
-          ]
-        },
-        {
-          "type": "enum",
-          "name": "core::option::Option::<core::array::Span::<dojo_starter::models::tile::Vec2>>",
-          "variants": [
-            {
-              "name": "Some",
-              "type": "core::array::Span::<dojo_starter::models::tile::Vec2>"
-            },
-            {
-              "name": "None",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "enum",
-          "name": "core::option::Option::<core::integer::u64>",
-          "variants": [
-            {
-              "name": "Some",
-              "type": "core::integer::u64"
-            },
-            {
-              "name": "None",
-              "type": "()"
-            }
-          ]
-        },
-        {
-          "type": "struct",
           "name": "dojo_starter::models::path::Path",
           "members": [
             {
@@ -2509,11 +2463,11 @@
             },
             {
               "name": "tiles",
-              "type": "core::option::Option::<core::array::Span::<dojo_starter::models::tile::Vec2>>"
+              "type": "core::array::Array::<core::integer::u32>"
             },
             {
               "name": "end_time",
-              "type": "core::option::Option::<core::integer::u64>"
+              "type": "core::integer::u64"
             }
           ]
         },
