@@ -10,13 +10,15 @@ const WORLD_SETTINGS_ID = 999;
 const worldEntityId = getEntityIdFromKeys([BigInt(WORLD_SETTINGS_ID)]);
 
 const init_settings = {
-  grid_size: 5,
+  grid_size: 7,
   map: [
-    0, 0, 0, 0, 0,
-    1, 1, 1, 1, 1,
-    2, 2, 2, 2, 2,
-    3, 3, 3, 3, 3,
-    4, 4, 4, 4, 4,
+    0, 0, 0, 0, 0, 0, 0,
+    1, 1, 1, 1, 1, 1, 1,
+    2, 2, 2, 2, 2, 2, 2,
+    3, 3, 3, 3, 3, 3, 3,
+    4, 4, 4, 4, 4, 4, 4,
+    1, 1, 1, 1, 1, 1, 1,
+    0, 0, 0, 0, 0, 0, 0,
   ] as TileNature[],
 };
 
