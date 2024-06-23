@@ -3,19 +3,12 @@ import { useComponentValue } from '@dojoengine/react';
 import { getEntityIdFromKeys } from '@dojoengine/utils';
 import './Cell.css';
 import { useMemo } from 'react';
+import { strToNature, TileNature } from '../../utils';
 
 interface CellProps {
   x: number;
   y: number;
 }
-
-enum CaseNature {
-  Road = 'Road',
-  House = 'House',
-  Tree = 'Tree',
-  Water = 'Water',
-}
-
 
 const Cell = ({x, y}: CellProps) => {
   const {
@@ -28,19 +21,23 @@ const Cell = ({x, y}: CellProps) => {
   ]);
 
   const tile = useComponentValue(Tile, entityId);
-  console.log('--- tile: x: ' + x + ' y: ' + y + ': ---');
-  console.log(tile);
+  // console.log('--- tile: x: ' + x + ' y: ' + y + ': ---');
+  // console.log(tile);
 
   const bgColor = useMemo(() => {
-    switch (tile?.nature) {
-      case CaseNature.Road:
-        return 'AntiqueWhite';
-      case CaseNature.House:
-        return 'brown';
-      case CaseNature.Tree:
+    console.log('--- tile: x: ' + x + ' y: ' + y + ': ---');
+    console.log(tile?.nature);
+    switch (strToNature(tile?.nature as unknown as string)) {
+      case TileNature.Grass:
         return 'green';
-      case CaseNature.Water:
+      case TileNature.Water:
         return 'blue';
+      case TileNature.Tree:
+        return 'green';
+      case TileNature.Road:
+        return 'AntiqueWhite';
+      case TileNature.House:
+        return 'brown';
     }
   }, [tile]);
 

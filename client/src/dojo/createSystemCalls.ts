@@ -2,7 +2,7 @@ import { AccountInterface } from "starknet";
 import { Entity, getComponentValue } from "@dojoengine/recs";
 import { uuid } from "@latticexyz/utils";
 import { ClientComponents } from "./createClientComponents";
-import { Direction, updatePositionWithDirection } from "../utils";
+import { Direction, TileNature, updatePositionWithDirection } from "../utils";
 import { getEntityIdFromKeys } from "@dojoengine/utils";
 import { ContractComponents } from "./generated/contractComponents";
 import type { IWorld } from "./generated/generated";
@@ -32,11 +32,12 @@ export function createSystemCalls(
         }
     };
 
-    const init_grid = async (account: AccountInterface, grid_size: number) => {
+    const init_grid = async (account: AccountInterface, grid_size: number, map: TileNature[]) => {
         try {
             const { transaction_hash } = await client.actions.init_grid({
                 account,
                 grid_size,
+                map
             });
 
             console.log(
@@ -87,24 +88,24 @@ export function createSystemCalls(
         ]) as Entity;
 
         const currentTileId = uuid();
-        Tile.addOverride(currentTileId, {
-            entity: currentTileEntity,
-            value: {
-                allocated: 'None' as any
-            },
-        });
+        // Tile.addOverride(currentTileId, {
+        //     entity: currentTileEntity,
+        //     value: {
+        //         allocated: 'None' as any
+        //     },
+        // });
 
         const nextTileEntity = getEntityIdFromKeys([
             BigInt(next_pos?.vec.x), BigInt(next_pos.vec.y)
         ]) as Entity;
 
         const nextTileId = uuid();
-        Tile.addOverride(nextTileId, {
-            entity: nextTileEntity,
-            value: {
-                allocated: 'Some' as any
-            },
-        });
+        // Tile.addOverride(nextTileId, {
+        //     entity: nextTileEntity,
+        //     value: {
+        //         allocated: 'Some' as any
+        //     },
+        // });
 
         try {
             const { transaction_hash } = await client.actions.move({
@@ -127,11 +128,11 @@ export function createSystemCalls(
             console.log(e);
             // Position.removeOverride(positionId);
             // Moves.removeOverride(movesId);
-            Tile.removeOverride(currentTileId);
-            Tile.removeOverride(nextTileId);
+            // Tile.removeOverride(currentTileId);
+            // Tile.removeOverride(nextTileId);
         } finally {
-            Tile.removeOverride(currentTileId);
-            Tile.removeOverride(nextTileId);
+            // Tile.removeOverride(currentTileId);
+            // Tile.removeOverride(nextTileId);
             // Position.removeOverride(positionId);
             // Moves.removeOverride(movesId);
         }

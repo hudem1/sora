@@ -6,7 +6,7 @@ struct Tile {
     #[key]
     _coords: Vec2,
     coords: Vec2,
-    nature: CaseNature,
+    nature: TileNature,
     allocated: Option<ContractAddress>, // whether an agent is already present on the case
 }
 
@@ -17,9 +17,22 @@ struct Vec2 {
 }
 
 #[derive(Copy, Drop, Serde, Introspect)]
-enum CaseNature {
+enum TileNature {
+    Grass,
+    Water,
+    Tree,
     Road,
     House,
-    Tree,
-    Water
+}
+
+impl TileNatureIntoFelt252 of Into<TileNature, felt252> {
+    fn into(self: TileNature) -> felt252 {
+        match self {
+            TileNature::Grass => 1,
+            TileNature::Water => 2,
+            TileNature::Tree => 3,
+            TileNature::Road => 4,
+            TileNature::House => 5,
+        }
+    }
 }

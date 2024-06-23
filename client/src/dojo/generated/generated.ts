@@ -2,7 +2,7 @@
 
 import { Account, AccountInterface } from "starknet";
 import { DojoProvider } from "@dojoengine/core";
-import { Direction } from "../../utils";
+import { Direction, TileNature } from "../../utils";
 
 export type IWorld = Awaited<ReturnType<typeof setupWorld>>;
 
@@ -14,6 +14,7 @@ export interface MoveProps {
 export interface InitGridProps {
     account: Account | AccountInterface;
     grid_size: number;
+    map: TileNature[];
 }
 
 export async function setupWorld(provider: DojoProvider) {
@@ -44,12 +45,12 @@ export async function setupWorld(provider: DojoProvider) {
             }
         };
 
-        const init_grid = async ({ account, grid_size }: InitGridProps) => {
+        const init_grid = async ({ account, grid_size, map }: InitGridProps) => {
             try {
                 return await provider.execute(account, {
                     contractName: "actions",
                     entrypoint: "init_grid",
-                    calldata: [grid_size],
+                    calldata: [grid_size, map],
                 });
             } catch (error) {
                 console.error("Error executing init grid:", error);

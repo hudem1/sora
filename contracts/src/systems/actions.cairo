@@ -2,11 +2,12 @@ use dojo_starter::models::moves::Direction;
 use dojo_starter::models::position::Position;
 use dojo_starter::models::tile::Vec2;
 use dojo::world::IWorldDispatcher;
+use dojo_starter::models::tile::TileNature;
 
 // define the interface
 #[dojo::interface]
 trait IActions {
-    fn init_grid(ref world: IWorldDispatcher, grid_size: u32);
+    fn init_grid(ref world: IWorldDispatcher, grid_size: u32, map: Span<TileNature>);
     fn spawn(ref world: IWorldDispatcher);
     // fn test_set_tile_alloc(ref world: IWorldDispatcher);
     // fn test_set_tile_unalloc(ref world: IWorldDispatcher);
@@ -21,7 +22,7 @@ mod actions {
     use starknet::{ContractAddress, get_caller_address, get_block_timestamp};
     use dojo_starter::models::{
         position::{Position}, moves::{Moves, Direction, DirectionsAvailable},
-        world_settings::{WorldSettings, SETTINGS_ID}, tile::{Tile, Vec2, CaseNature},
+        world_settings::{WorldSettings, SETTINGS_ID}, tile::{Tile, Vec2, TileNature},
         path::Path, pending_paths::{WorldPendingPaths, WORLD_PENDING_PATHS_ID, PendingPath},
     };
     use core::array::ArrayTrait;
@@ -37,10 +38,11 @@ mod actions {
 
     #[abi(embed_v0)]
     impl ActionsImpl of IActions<ContractState> {
-        fn init_grid(ref world: IWorldDispatcher, grid_size: u32) {
+        fn init_grid(ref world: IWorldDispatcher, grid_size: u32, map: Span<TileNature>) {
             assert(grid_size > 0, 'grid size must be > 0');
+            assert(map.len() == grid_size * grid_size, 'map size must match grid size');
 
-            set!(world, (WorldSettings { settings_id: SETTINGS_ID, grid_size }));
+            set!(world, (WorldSettings { settings_id: SETTINGS_ID, grid_size, map }));
 
             let mut row = 0;
             while row < grid_size {
@@ -52,7 +54,7 @@ mod actions {
                             // not stored, only used for computing storage address
                             _coords: Vec2 { y: row, x: col },
                             coords: Vec2 { y: row, x: col },
-                            nature: CaseNature::Road,
+                            nature: *map.at(row * grid_size + col),
                             allocated: Option::None,
                         })
                     );
@@ -190,18 +192,6 @@ mod actions {
             }
         }
     }
-// #[generate_trait]
-// impl ActionsInternImpl of ActionsIntern {
-//     fn is_move_inside_grid_bounds(position: Position, direction: Direction, grid_size: u32) -> bool {
-//         match direction {
-//             Direction::Left => { position.vec.x > 0 },
-//             Direction::Right => { position.vec.x < grid_size },
-//             Direction::Up => { position.vec.y < grid_size },
-//             Direction::Down => { position.vec.y > 0 },
-//             Direction::None => { true },
-//         }
-//     }
-// }
 }
 
 

@@ -45,6 +45,32 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    PendingPath: (() => {
+      return defineComponent(
+        world,
+        { player: RecsType.BigInt, path: RecsType.Number },
+        {
+          metadata: {
+            name: "PendingPath",
+            types: ["contractaddress","enum"],
+            customTypes: ["Option<T>"],
+          },
+        }
+      );
+    })(),
+    WorldPendingPaths: (() => {
+      return defineComponent(
+        world,
+        { paths_id: RecsType.Number, pending_paths: RecsType.StringArray },
+        {
+          metadata: {
+            name: "WorldPendingPaths",
+            types: ["u32"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
     Position: (() => {
       return defineComponent(
         world,
@@ -66,7 +92,7 @@ export function defineContractComponents(world: World) {
           metadata: {
             name: "Tile",
             types: ["u32","u32","u32","u32","enum","enum"],
-            customTypes: ["Vec2","Vec2","CaseNature","Option<T>"],
+            customTypes: ["Vec2","Vec2","TileNature","Option<T>"],
           },
         }
       );
@@ -74,7 +100,7 @@ export function defineContractComponents(world: World) {
     WorldSettings: (() => {
       return defineComponent(
         world,
-        { settings_id: RecsType.Number, grid_size: RecsType.Number },
+        { settings_id: RecsType.Number, grid_size: RecsType.Number, map: RecsType.StringArray },
         {
           metadata: {
             name: "WorldSettings",

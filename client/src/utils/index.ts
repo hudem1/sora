@@ -30,3 +30,28 @@ export function updatePositionWithDirection(
 
     return new_value;
 }
+
+export enum TileNature {
+   Grass = 1,
+   Water = 2,
+   Tree = 3,
+   Road = 4,
+   House = 5,
+}
+
+export const strToNature = (str: string): TileNature => {
+    switch (str) {
+        case 'Grass':
+            return TileNature.Grass;
+        case 'Water':
+            return TileNature.Water;
+        case 'Tree':
+            return TileNature.Tree;
+        case 'Road':
+            return TileNature.Road;
+        case 'House':
+            return TileNature.House;
+        default:
+            throw new Error('Invalid tile nature');
+    }
+}
