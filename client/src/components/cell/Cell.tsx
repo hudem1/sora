@@ -7,6 +7,7 @@ import { useMemo } from 'react';
 interface CellProps {
   x: number;
   y: number;
+  is_on_active_path: boolean;
 }
 
 enum CaseNature {
@@ -17,7 +18,7 @@ enum CaseNature {
 }
 
 
-const Cell = ({x, y}: CellProps) => {
+const Cell = ({x, y, is_on_active_path}: CellProps) => {
   const {
     setup: { clientComponents: { Tile }, },
     account,
@@ -32,6 +33,8 @@ const Cell = ({x, y}: CellProps) => {
   // console.log(tile);
 
   const bgColor = useMemo(() => {
+    if (is_on_active_path) return 'red';
+
     switch (tile?.nature) {
       case CaseNature.Road:
         return 'AntiqueWhite';
@@ -42,7 +45,12 @@ const Cell = ({x, y}: CellProps) => {
       case CaseNature.Water:
         return 'blue';
     }
-  }, [tile]);
+  }, [tile, is_on_active_path]);
+
+  // const borderColor = useMemo(
+  //   () => is_on_active_path ? 'red' : '',
+  //   [is_on_active_path]
+  // );
 
   return (
     <div className="grid-cell" style={{ backgroundColor: bgColor }}>

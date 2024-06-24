@@ -37,11 +37,24 @@ export async function setupWorld(provider: DojoProvider) {
             }
         };
 
-        const move = async ({ account, direction }: MoveProps) => {
+        const move_freely = async ({ account, direction }: MoveProps) => {
             try {
                 return await provider.execute(account, {
                     contractName: "actions",
-                    entrypoint: "move",
+                    entrypoint: "move_freely",
+                    calldata: [direction],
+                });
+            } catch (error) {
+                console.error("Error executing move:", error);
+                throw error;
+            }
+        };
+
+        const move_on_path = async ({ account, direction }: MoveProps) => {
+            try {
+                return await provider.execute(account, {
+                    contractName: "actions",
+                    entrypoint: "move_on_path",
                     calldata: [direction],
                 });
             } catch (error) {
@@ -76,7 +89,7 @@ export async function setupWorld(provider: DojoProvider) {
             }
         }
 
-        return { spawn, move, init_grid, verifyPath };
+        return { spawn, move_freely, move_on_path, init_grid, verifyPath };
     }
 
     return {

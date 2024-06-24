@@ -4,7 +4,7 @@ mod systems {
 
 mod models {
     mod moves;
-    mod path;
+    mod active_path;
     mod pending_paths;
     mod position;
     mod tile;

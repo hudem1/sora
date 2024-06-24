@@ -5,7 +5,7 @@ original_class_hash = "0x3f63cecdc4964acafb921ba2934c6507d1b3c344edb64c2762cf080
 abi = "manifests/dev/abis/deployments/dojo_world_world.json"
 address = "0xb4079627ebab1cd3cf9fd075dda1ad2454a7a448bf659591f259efa2519b18"
 transaction_hash = "0x3a729aa09b4ad351fbc724f94c6d599037a53d7d9b5a182097a60fb09d0486c"
-block_number = 14
+block_number = 17
 seed = "dojo_starter"
 name = "dojo::world::world"
 
@@ -22,8 +22,8 @@ name = "dojo::base::base"
 [[contracts]]
 kind = "DojoContract"
 address = "0x3610b797baec740e2fa25ae90b4a57d92b04f48a1fdbae1ae203eaf9723c1a0"
-class_hash = "0x103db33e83aa4cd2fc67120e2ffcfd36428da45ea1b7064d4a81863225d9d58"
-original_class_hash = "0x103db33e83aa4cd2fc67120e2ffcfd36428da45ea1b7064d4a81863225d9d58"
+class_hash = "0x7626def13db3af93d4893d15ef15208be005d89b95cd9da95e65287fb275a93"
+original_class_hash = "0x7626def13db3af93d4893d15ef15208be005d89b95cd9da95e65287fb275a93"
 base_class_hash = "0x22f3e55b61d86c2ac5239fa3b3b8761f26b9a5c0b5f61ddbd5d756ced498b46"
 abi = "manifests/dev/abis/deployments/contracts/dojo_starter_systems_actions_actions.json"
 reads = []
@@ -32,7 +32,7 @@ writes = [
     "Moves",
     "DirectionsAvailable",
     "Tile",
-    "Path",
+    "ActivePath",
     "WorldSettings",
     "WorldPendingPaths",
     "PendingPath",
@@ -40,6 +40,33 @@ writes = [
 computed = []
 init_calldata = []
 name = "dojo_starter::systems::actions::actions"
+
+[[models]]
+kind = "DojoModel"
+class_hash = "0x373d672551ce2b2450e7c26d392308a912bea1018941ac0dae586df4fb11e60"
+original_class_hash = "0x373d672551ce2b2450e7c26d392308a912bea1018941ac0dae586df4fb11e60"
+abi = "manifests/dev/abis/deployments/models/dojo_starter_models_active_path_active_path.json"
+name = "dojo_starter::models::active_path::active_path"
+
+[[models.members]]
+name = "player"
+type = "ContractAddress"
+key = true
+
+[[models.members]]
+name = "tiles"
+type = "Span<u32>"
+key = false
+
+[[models.members]]
+name = "end_time"
+type = "u64"
+key = false
+
+[[models.members]]
+name = "completed"
+type = "bool"
+key = false
 
 [[models]]
 kind = "DojoModel"
@@ -78,28 +105,6 @@ key = false
 [[models.members]]
 name = "can_move"
 type = "bool"
-key = false
-
-[[models]]
-kind = "DojoModel"
-class_hash = "0x1bd1c9409571a759e98db15ecdd862c10d365fd68b9a79b7f132e13ad04a80b"
-original_class_hash = "0x1bd1c9409571a759e98db15ecdd862c10d365fd68b9a79b7f132e13ad04a80b"
-abi = "manifests/dev/abis/deployments/models/dojo_starter_models_path_path.json"
-name = "dojo_starter::models::path::path"
-
-[[models.members]]
-name = "player"
-type = "ContractAddress"
-key = true
-
-[[models.members]]
-name = "tiles"
-type = "Array<u32>"
-key = false
-
-[[models.members]]
-name = "end_time"
-type = "u64"
 key = false
 
 [[models]]

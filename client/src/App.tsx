@@ -40,8 +40,8 @@ export interface ActivePath {
 function App() {
     const {
         setup: {
-            systemCalls: { spawn, move, init_grid, verifyPath },
-            clientComponents: { Path, Position, WorldSettings },
+            systemCalls: { spawn, move_on_path, init_grid, verifyPath },
+            clientComponents: { ActivePath, Position, WorldSettings },
             dojoProvider,
         },
         account,
@@ -75,9 +75,9 @@ function App() {
         console.log('--- dans moveAlongRegisteredPath ---');
         for (const i in path) {
             if (+i == 0) continue;
-            await move(account.account, computeDirectionFromPosition(+path[+i-1], +path[i], grid_size!));
+            await move_on_path(account.account, computeDirectionFromPosition(+path[+i-1], +path[i], grid_size!));
         }
-    }, [account.account, grid_size, move]);
+    }, [account.account, grid_size, move_on_path]);
 
     const setActivePlayerPath = useCallback((path: string[], endTime: number) => {
         setActivePath({
@@ -127,7 +127,7 @@ function App() {
         const entity = getEntityIdFromKeys([
             BigInt(account.account.address)
           ]);
-        const player_path = getComponentValue(Path, entity);
+        const player_path = getComponentValue(ActivePath, entity);
 
         console.log('--- player_path ---');
         console.log(player_path);
@@ -144,7 +144,7 @@ function App() {
             // error should not occur as path has been accepted and set as active for the player
             console.error("Player's path is already expired");
         }
-    }, [account.account, verifyPath, Path, coordsIntoTileId, dojoProvider.provider, moveAlongRegisteredPath, setActivePlayerPath]);
+    }, [account.account, verifyPath, ActivePath, coordsIntoTileId, dojoProvider.provider, moveAlongRegisteredPath, setActivePlayerPath]);
 
     return (
         <div className="App">

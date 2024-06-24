@@ -51,7 +51,7 @@ export function createSystemCalls(
         }
     };
 
-    const move = async (account: AccountInterface, direction: Direction) => {
+    const move_freely = async (account: AccountInterface, direction: Direction) => {
         const entityId = getEntityIdFromKeys([
             BigInt(account.address),
         ]) as Entity;
@@ -107,7 +107,7 @@ export function createSystemCalls(
         // });
 
         try {
-            const { transaction_hash } = await client.actions.move({
+            const { transaction_hash } = await client.actions.move_freely({
                 account,
                 direction,
             });
@@ -137,6 +137,28 @@ export function createSystemCalls(
         }
     };
 
+    const move_on_path = async (account: AccountInterface, direction: Direction) => {
+        const entityId = getEntityIdFromKeys([
+            BigInt(account.address),
+        ]) as Entity;
+
+        try {
+            const { transaction_hash } = await client.actions.move_on_path({
+                account,
+                direction,
+            });
+
+            await account.waitForTransaction(transaction_hash, {
+                retryInterval: 100,
+            });
+
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+        } catch (e) {
+            console.log(e);
+            throw e;
+        }
+    };
+
     const verifyPath = async (account: AccountInterface, path: number[]) => {
         try {
             const { transaction_hash } = await client.actions.verifyPath({
@@ -159,7 +181,8 @@ export function createSystemCalls(
 
     return {
         spawn,
-        move,
+        move_freely,
+        move_on_path,
         init_grid,
         verifyPath,
     };

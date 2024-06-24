@@ -1,13 +1,13 @@
 use starknet::ContractAddress;
 use super::tile::Vec2;
 
-#[derive(Drop, Serde)]
+#[derive(Copy, Drop, Serde)]
 #[dojo::model]
-struct Path {
+struct ActivePath {
     #[key]
     player: ContractAddress,
     // tiles: Option<Span<Vec2>>,
-    tiles: Array<u32>,
+    tiles: Span<u32>,
     // end_time: Option<u64>
     end_time: u64,
     completed: bool,

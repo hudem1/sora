@@ -6,6 +6,19 @@ export type ContractComponents = Awaited<ReturnType<typeof defineContractCompone
 
 export function defineContractComponents(world: World) {
   return {
+    ActivePath: (() => {
+      return defineComponent(
+        world,
+        { player: RecsType.BigInt, tiles: RecsType.StringArray, end_time: RecsType.BigInt, completed: RecsType.Boolean },
+        {
+          metadata: {
+            name: "ActivePath",
+            types: ["contractaddress","u64","bool"],
+            customTypes: [],
+          },
+        }
+      );
+    })(),
     DirectionsAvailable: (() => {
       return defineComponent(
         world,
@@ -28,19 +41,6 @@ export function defineContractComponents(world: World) {
             name: "Moves",
             types: ["contractaddress","enum","bool"],
             customTypes: ["Direction"],
-          },
-        }
-      );
-    })(),
-    Path: (() => {
-      return defineComponent(
-        world,
-        { player: RecsType.BigInt, tiles: RecsType.StringArray, end_time: RecsType.BigInt },
-        {
-          metadata: {
-            name: "Path",
-            types: ["contractaddress","u64"],
-            customTypes: [],
           },
         }
       );

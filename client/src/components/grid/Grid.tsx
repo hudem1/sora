@@ -13,20 +13,20 @@ interface GridProps {
   activePath: ActivePath;
 }
 
-const Grid = ({rows, cols}: GridProps) => {
+const Grid = ({rows, cols, activePath}: GridProps) => {
   const {
     setup: {
-      systemCalls: { move },
-      clientComponents: { Path },
+      systemCalls: { move_freely },
+      clientComponents: { ActivePath },
       dojoProvider,
     },
     account,
   } = useDojo();
 
-  // const playerEntityId = getEntityIdFromKeys([
-  //   BigInt(account.account.address)
-  // ]);
-  // const player_path = useComponentValue(Path, playerEntityId);
+  const playerEntityId = getEntityIdFromKeys([
+    BigInt(account.account.address)
+  ]);
+  const player_path = useComponentValue(ActivePath, playerEntityId);
 
   // useEffect(() => {
   //   console.log('--- player_path ---');
@@ -47,19 +47,19 @@ const Grid = ({rows, cols}: GridProps) => {
       switch (event.key) {
         case 'ArrowUp':
           console.log('Up arrow pressed');
-          move(account.account, Direction.Up);
+          move_freely(account.account, Direction.Up);
           break;
         case 'ArrowDown':
           console.log('Down arrow pressed');
-          move(account.account, Direction.Down);
+          move_freely(account.account, Direction.Down);
           break;
         case 'ArrowLeft':
           console.log('Left arrow pressed');
-          move(account.account, Direction.Left);
+          move_freely(account.account, Direction.Left);
           break;
         case 'ArrowRight':
           console.log('Right arrow pressed');
-          move(account.account, Direction.Right);
+          move_freely(account.account, Direction.Right);
           break;
       }
     };
@@ -70,15 +70,23 @@ const Grid = ({rows, cols}: GridProps) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [account.account, move]);
+  }, [account.account, move_freely]);
 
   return (
     <div className="grid">
       {Array.from({length: rows}).map((_, rowIndex) => (
         <div key={rowIndex} className="grid-row">
-          {Array.from({length: cols}).map((_, colIndex) => (
-            <Cell key={rowIndex.toString() + colIndex.toString()} y={rowIndex} x={colIndex} />
-          ))}
+          {Array.from({length: cols}).map((_, colIndex) => {
+            const tileId = rowIndex * cols + colIndex;
+            return (
+              <Cell
+                key={tileId}
+                y={rowIndex}
+                x={colIndex}
+                is_on_active_path={activePath.path.has(tileId) && (!player_path?.completed)}
+              />
+            )
+          })}
         </div>
       ))}
     </div>

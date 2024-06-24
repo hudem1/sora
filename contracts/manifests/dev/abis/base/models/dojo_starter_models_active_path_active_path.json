@@ -319,8 +319,18 @@
   },
   {
     "type": "impl",
-    "name": "pathImpl",
-    "interface_name": "dojo_starter::models::path::Ipath"
+    "name": "active_pathImpl",
+    "interface_name": "dojo_starter::models::active_path::Iactive_path"
+  },
+  {
+    "type": "struct",
+    "name": "core::array::Span::<core::integer::u32>",
+    "members": [
+      {
+        "name": "snapshot",
+        "type": "@core::array::Array::<core::integer::u32>"
+      }
+    ]
   },
   {
     "type": "enum",
@@ -338,7 +348,7 @@
   },
   {
     "type": "struct",
-    "name": "dojo_starter::models::path::Path",
+    "name": "dojo_starter::models::active_path::ActivePath",
     "members": [
       {
         "name": "player",
@@ -346,7 +356,7 @@
       },
       {
         "name": "tiles",
-        "type": "core::array::Array::<core::integer::u32>"
+        "type": "core::array::Span::<core::integer::u32>"
       },
       {
         "name": "end_time",
@@ -360,7 +370,7 @@
   },
   {
     "type": "interface",
-    "name": "dojo_starter::models::path::Ipath",
+    "name": "dojo_starter::models::active_path::Iactive_path",
     "items": [
       {
         "type": "function",
@@ -368,7 +378,7 @@
         "inputs": [
           {
             "name": "model",
-            "type": "dojo_starter::models::path::Path"
+            "type": "dojo_starter::models::active_path::ActivePath"
           }
         ],
         "outputs": [],
@@ -378,7 +388,7 @@
   },
   {
     "type": "event",
-    "name": "dojo_starter::models::path::path::Event",
+    "name": "dojo_starter::models::active_path::active_path::Event",
     "kind": "enum",
     "variants": []
   }
